@@ -2,16 +2,18 @@ package com.example.lesson02_DB.services;
 
 import java.util.List;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.lesson02_DB.dto.request.userCreationRequest;
-import com.example.lesson02_DB.dto.request.userUpdateRequest;
+import com.example.lesson02_DB.dto.request.UserCreationRequest;
+import com.example.lesson02_DB.dto.request.UserUpdateRequest;
 import com.example.lesson02_DB.dto.response.UserResponse;
-import com.example.lesson02_DB.entity.user;
+import com.example.lesson02_DB.entity.User;
 import com.example.lesson02_DB.exception.AppException;
 import com.example.lesson02_DB.exception.ErrorCode;
 import com.example.lesson02_DB.mapper.UserMapper;
-import com.example.lesson02_DB.repositories.userRepository;
+import com.example.lesson02_DB.repositories.UserRepository;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -20,11 +22,11 @@ import lombok.experimental.FieldDefaults;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class userService {
-    userRepository userRepo;
+public class UserService {
+    UserRepository userRepo;
 
     UserMapper userMapper;
-    public user createUser(userCreationRequest request) {
+    public User createUser(UserCreationRequest request) {
         
         if(userRepo.existsByUsername(request.getUsername())){
             throw new AppException(ErrorCode.USER_EXISTED);
@@ -42,13 +44,15 @@ public class userService {
         // user.setLastname(request.getLastname());
         // user.setDob(request.getDob());
         // sd mapstruct
-        user user = userMapper.toUser(request);
-
+        User user = userMapper.toUser(request);
+        // mã hóa pass = Bcrypt
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         return userRepo.save(user);
 
     }
 
-    public List<user> getUsers() {
+    public List<User> getUsers() {
         return userRepo.findAll();
     }
 
@@ -56,8 +60,8 @@ public class userService {
         return userMapper.toUserResponse(userRepo.findById(id).orElseThrow(() -> new RuntimeException("User k ton tai")));
     }
 
-    public UserResponse updatUser(String id, userUpdateRequest request) {
-        user u = userRepo.findById(id).orElseThrow(() -> new RuntimeException("User k ton tai"));
+    public UserResponse updatUser(String id, UserUpdateRequest request) {
+        User u = userRepo.findById(id).orElseThrow(() -> new RuntimeException("User k ton tai"));
         userMapper.updatUser(u, request);
         // u.setPassword(request.getPassword());
         // u.setFirstname(request.getFirstname());

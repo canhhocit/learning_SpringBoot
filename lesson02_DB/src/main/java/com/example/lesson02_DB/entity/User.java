@@ -8,7 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class user {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;

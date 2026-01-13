@@ -6,11 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.lesson02_DB.dto.request.ApiResponse;
-import com.example.lesson02_DB.dto.request.userCreationRequest;
-import com.example.lesson02_DB.dto.request.userUpdateRequest;
+import com.example.lesson02_DB.dto.request.UserCreationRequest;
+import com.example.lesson02_DB.dto.request.UserUpdateRequest;
 import com.example.lesson02_DB.dto.response.UserResponse;
-import com.example.lesson02_DB.entity.user;
-import com.example.lesson02_DB.services.userService;
+import com.example.lesson02_DB.entity.User;
+import com.example.lesson02_DB.services.UserService;
 
 import jakarta.validation.Valid;
 
@@ -26,18 +26,18 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("/users")
-public class userControler {
+public class UserControler {
     @Autowired
-    private userService uService;
+    private UserService uService;
 
     @PostMapping
-    ApiResponse<user> createUser(@RequestBody @Valid userCreationRequest request) {
-        ApiResponse <user> apiResponse = new ApiResponse<>();
+    ApiResponse<User> createUser(@RequestBody @Valid UserCreationRequest request) {
+        ApiResponse <User> apiResponse = new ApiResponse<>();
         apiResponse.setResult(uService.createUser(request));
         return apiResponse;
     }
     @GetMapping
-    List<user> getUsers(){
+    List<User> getUsers(){
        return uService.getUsers();
     }
     @GetMapping("/{userId}")
@@ -46,7 +46,7 @@ public class userControler {
     }
     //update
     @PutMapping("/{userId}")
-    UserResponse updateUser(@PathVariable String userId,@RequestBody userUpdateRequest request ){
+    UserResponse updateUser(@PathVariable String userId,@RequestBody UserUpdateRequest request ){
         return uService.updatUser(userId, request);
     } 
     //delete

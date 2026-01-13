@@ -4,21 +4,21 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-import com.example.lesson02_DB.dto.request.userCreationRequest;
-import com.example.lesson02_DB.dto.request.userUpdateRequest;
+import com.example.lesson02_DB.dto.request.UserCreationRequest;
+import com.example.lesson02_DB.dto.request.UserUpdateRequest;
 import com.example.lesson02_DB.dto.response.UserResponse;
-import com.example.lesson02_DB.entity.user;
+import com.example.lesson02_DB.entity.User;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
     @Mapping(target = "id", ignore = true)
-    user toUser(userCreationRequest request);
+    User toUser(UserCreationRequest request);
     
     // @Mapping (source = "firstname", target = "lastname")
-    UserResponse toUserResponse(user u);
+    UserResponse toUserResponse(User u);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "username", ignore = true)
-    void updatUser(@MappingTarget user u, userUpdateRequest request);
+    void updatUser(@MappingTarget User u, UserUpdateRequest request);
 
 }

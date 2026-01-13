@@ -2,6 +2,7 @@ package com.example.lesson02_DB.dto.request;
 
 import java.time.LocalDate;
 
+import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,16 +10,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+// get,set,toString
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@FieldDefaults (level = AccessLevel.PRIVATE)
-public class userUpdateRequest {
+@Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class UserCreationRequest {
+    @Size(min = 3, message = "USERNAME_INVALID")
+    String username;
+    @Size(min = 5, message = "PASSWORD_INVALID")
+
     String password;
     String firstname;
     String lastname;
     LocalDate dob;
-    
-    
+
 }
