@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.lesson02_DB.dto.request.ApiResponse;
 import com.example.lesson02_DB.dto.request.AuthenticationRequest;
+import com.example.lesson02_DB.dto.request.IntrospectRequest;
 import com.example.lesson02_DB.dto.response.AuthenticationResponse;
+import com.example.lesson02_DB.dto.response.IntrospectResponse;
 import com.example.lesson02_DB.services.AuthenticationService;
 
 import lombok.AccessLevel;
@@ -20,13 +22,19 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthenticationController {
     AuthenticationService authenticationService;
-    @PostMapping("/login")
+    @PostMapping("/token")
     ApiResponse<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request){
-        boolean result =  authenticationService.authenticate(request);
+        var result =  authenticationService.authenticate(request);
         return ApiResponse.<AuthenticationResponse>builder()    
-            .result(AuthenticationResponse.builder()
-                .authenticated(result)
-                .build())
+            .result(result)
+            .build();
+    }
+
+     @PostMapping("/introspect")
+    ApiResponse<IntrospectResponse> authenticate(@RequestBody IntrospectRequest request){
+        var result =  authenticationService.introspect(request);
+        return ApiResponse.<IntrospectResponse>builder()    
+            .result(result)
             .build();
     }
 }
