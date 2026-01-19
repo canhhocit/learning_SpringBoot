@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practice 001</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Work with basic Entity</h1>
+    
+    <div id="message"></div>
+    
+    <!-- Form thêm/sửa user -->
+    <div class="form-group">
+        <label>ID (để trống khi tạo mới):</label>
+        <input type="text" id="userId" placeholder="ID">
+    </div>
+    
+    <div class="form-group">
+        <label>Tên:</label>
+        <input type="text" id="userName" placeholder="Nhập tên">
+    </div>
+    
+    <div class="form-group">
+        <label>Địa chỉ:</label>
+        <input type="text" id="userAddress" placeholder="Nhập địa chỉ">
+    </div>
+    
+    <div>
+        <button class="btn-create" onclick="createUser()">Tạo mới</button>
+        <button class="btn-update" onclick="updateUser()">Cập nhật</button>
+        <button class="btn-load" onclick="loadUsers()">Tải danh sách</button>
+    </div>
+    
+    <!-- Bảng hiển thị danh sách user -->
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tên</th>
+                <th>Địa chỉ</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody id="userTable">
+            <tr>
+                <td colspan="4" style="text-align: center;">Nhấn "Tải danh sách" để xem dữ liệu</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script src="main.js"></script>
+</body>
+</html>

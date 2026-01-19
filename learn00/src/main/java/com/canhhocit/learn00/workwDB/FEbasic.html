@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Công thức FE gọi API</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+        }
+        h1 {
+            color: #4ec9b0;
+            text-align: center;
+        }
+        .section {
+            background-color: #252526;
+            border-left: 4px solid #4ec9b0;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .method {
+            color: #dcdcaa;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .code {
+            background-color: #1e1e1e;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        .comment {
+            color: #6a9955;
+        }
+        .keyword {
+            color: #569cd6;
+        }
+        .string {
+            color: #ce9178;
+        }
+        .function {
+            color: #dcdcaa;
+        }
+        .result {
+            background-color: #264f78;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .test-btn {
+            background-color: #0e639c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-btn:hover {
+            background-color: #1177bb;
+        }
+        #output {
+            background-color: #1e1e1e;
+            border: 1px solid #4ec9b0;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            min-height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔥 CÔNG THỨC FE GỌI API - 4 THAO TÁC CƠ BẢN 🔥</h1>
+
+    <!-- GET -->
+    <div class="section">
+        <div class="method">1️⃣ LẤY DỮ LIỆU (GET)</div>
+        <div class="code">
+<span class="comment">// Công thức:</span>
+<span class="keyword">const</span> response = <span class="keyword">await</span> <span class="function">fetch</span>(<span class="string">'URL'</span>);
+<span class="keyword">const</span> data = <span class="keyword">await</span> response.<span class="function">json</span>();
+
+<span class="comment">// Ví dụ thực tế:</span>
+<span class="keyword">async function</span> <span class="function">getData</span>() {
+    <span class="keyword">const</span> response = <span class="keyword">await</span> <span class="function">fetch</span>(<span class="string">'http://localhost:8080/api/users'</span>);
+    <span class="keyword">const</span> users = <span class="keyword">await</span> response.<span class="function">json</span>();
+    console.<span class="function">log</span>(users); <span class="comment">// In ra danh sách</span>
+}
+        </div>
+        <div class="result">
+            <strong>BE trả về JSON:</strong> <code>[{"userID":1,"name":"An","address":"HN"}]</code>
+        </div>
+        <button class="test-btn" onclick="testGet()">Test GET</button>
+    </div>
+
+    <!-- POST -->
+    <div class="section">
+        <div class="method">2️⃣ TẠO MỚI (POST)</div>
+        <div class="code">
+<span class="comment">// Công thức:</span>
+<span class="keyword">const</span> response = <span class="keyword">await</span> <span class="function">fetch</span>(<span class="string">'URL'</span>, {
+    method: <span class="string">'POST'</span>,
+    headers: { <span class="string">'Content-Type'</span>: <span class="string">'application/json'</span> },
+    body: <span class="function">JSON.stringify</span>(duLieu)
+});
+
+<span class="comment">// Ví dụ thực tế:</span>
+<span class="keyword">async function</span> <span class="function">createData</span>() {
+    <span class="keyword">const</span> newUser = { name: <span class="string">"Bình"</span>, address: <span class="string">"HCM"</span> };
+    
+    <span class="keyword">const</span> response = <span class="keyword">await</span> <span class="function">fetch</span>(<span class="string">'http://localhost:8080/api/users'</span>, {
+        method: <span class="string">'POST'</span>,
+        headers: { <span class="string">'Content-Type'</span>: <span class="string">'application/json'</span> },
+        body: <span class="function">JSON.stringify</span>(newUser)
+    });
+    
+    <span class="keyword">const</span> result = <span class="keyword">await</span> response.<span class="function">json</span>();
+    console.<span class="function">log</span>(<span class="string">"Đã tạo:"</span>, result);
+}
+        </div>
+        <div class="result">
+            <strong>Gửi lên BE:</strong> <code>{"name":"Bình","address":"HCM"}</code><br>
+            <strong>BE trả về:</strong> <code>{"userID":2,"name":"Bình","address":"HCM"}</code>
+        </div>
+        <button class="test-btn" onclick="testPost()">Test POST</button>
+    </div>
+
+    <!-- PUT -->
+    <div class="section">
+        <div class="method">3️⃣ CẬP NHẬT (PUT)</div>
+        <div class="code">
+<span class="comment">// Công thức:</span>
+<span class="keyword">const</span> response = <span class="keyword">await</span> <span class="function">fetch</span>(<span class="string">'URL/id'</span>, {
+    method: <span class="string">'PUT'</span>,
+    headers: { <span class="string">'Content-Type'</span>: <span class="string">'application/json'</span> },
+    body: <span class="function">JSON.stringify</span>(duLieuMoi)
+});
+
+<span class="comment">// Ví dụ thực tế:</span>
+<span class="keyword">async function</span> <span class="function">updateData</span>() {
+    <span class="keyword">const</span> id = <span class="string">1</span>;
+    <span class="keyword">const</span> updated = { name: <span class="string">"An Updated"</span>, address: <span class="string">"DN"</span> };
+    
+    <span class="keyword">const</span> response = <span class="keyword">await</span> <span class="function">fetch</span>(<span class="string">`http://localhost:8080/api/users/${id}`</span>, {
+        method: <span class="string">'PUT'</span>,
+        headers: { <span class="string">'Content-Type'</span>: <span class="string">'application/json'</span> },
+        body: <span class="function">JSON.stringify</span>(updated)
+    });
+    
+    <span class="keyword">const</span> result = <span class="keyword">await</span> response.<span class="function">json</span>();
+    console.<span class="function">log</span>(<span class="string">"Đã cập nhật:"</span>, result);
+}
+        </div>
+        <div class="result">
+            <strong>Gửi lên BE:</strong> <code>{"name":"An Updated","address":"DN"}</code><br>
+            <strong>BE trả về:</strong> <code>{"userID":1,"name":"An Updated","address":"DN"}</code>
+        </div>
+        <button class="test-btn" onclick="testPut()">Test PUT</button>
+    </div>
+
+    <!-- DELETE -->
+    <div class="section">
+        <div class="method">4️⃣ XÓA (DELETE)</div>
+        <div class="code">
+<span class="comment">// Công thức:</span>
+<span class="keyword">const</span> response = <span class="keyword">await</span> <span class="function">fetch</span>(<span class="string">'URL/id'</span>, {
+    method: <span class="string">'DELETE'</span>
+});
+
+<span class="comment">// Ví dụ thực tế:</span>
+<span class="keyword">async function</span> <span class="function">deleteData</span>() {
+    <span class="keyword">const</span> id = <span class="string">1</span>;
+    
+    <span class="keyword">const</span> response = <span class="keyword">await</span> <span class="function">fetch</span>(<span class="string">`http://localhost:8080/api/users/${id}`</span>, {
+        method: <span class="string">'DELETE'</span>
+    });
+    
+    console.<span class="function">log</span>(<span class="string">"Đã xóa ID:"</span>, id);
+}
+        </div>
+        <div class="result">
+            <strong>BE xóa:</strong> User có ID = 1<br>
+            <strong>Response:</strong> Thường trả về status 200/204 (không có body)
+        </div>
+        <button class="test-btn" onclick="testDelete()">Test DELETE</button>
+    </div>
+
+    <!-- BẢNG TỔNG HỢP -->
+    <div class="section" style="border-left-color: #ce9178;">
+        <h2 style="color: #ce9178; margin-top: 0;">📋 BẢNG TÓM TẮT</h2>
+        <table style="width: 100%; color: #d4d4d4; border-collapse: collapse;">
+            <tr style="background-color: #1e1e1e;">
+                <th style="padding: 10px; border: 1px solid #444;">Method</th>
+                <th style="padding: 10px; border: 1px solid #444;">Mục đích</th>
+                <th style="padding: 10px; border: 1px solid #444;">URL</th>
+                <th style="padding: 10px; border: 1px solid #444;">Body</th>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #444;"><strong>GET</strong></td>
+                <td style="padding: 10px; border: 1px solid #444;">Lấy dữ liệu</td>
+                <td style="padding: 10px; border: 1px solid #444;">/api/users</td>
+                <td style="padding: 10px; border: 1px solid #444;">Không có</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #444;"><strong>POST</strong></td>
+                <td style="padding: 10px; border: 1px solid #444;">Tạo mới</td>
+                <td style="padding: 10px; border: 1px solid #444;">/api/users</td>
+                <td style="padding: 10px; border: 1px solid #444;">JSON data</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #444;"><strong>PUT</strong></td>
+                <td style="padding: 10px; border: 1px solid #444;">Cập nhật</td>
+                <td style="padding: 10px; border: 1px solid #444;">/api/users/1</td>
+                <td style="padding: 10px; border: 1px solid #444;">JSON data</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #444;"><strong>DELETE</strong></td>
+                <td style="padding: 10px; border: 1px solid #444;">Xóa</td>
+                <td style="padding: 10px; border: 1px solid #444;">/api/users/1</td>
+                <td style="padding: 10px; border: 1px solid #444;">Không có</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- KHU VỰC TEST -->
+    <div class="section" style="border-left-color: #f48771;">
+        <h2 style="color: #f48771; margin-top: 0;">🧪 KHU VỰC TEST (Cần BE chạy)</h2>
+        <p>Nhấn các nút test ở trên để xem kết quả thực tế:</p>
+        <div id="output">Kết quả sẽ hiển thị ở đây...</div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:8080/api/users';
+        const output = document.getElementById('output');
+
+        function showResult(text) {
+            output.innerHTML = `<pre>${text}</pre>`;
+        }
+
+        // Test GET
+        async function testGet() {
+            try {
+                const response = await fetch(API_URL);
+                const data = await response.json();
+                showResult('GET SUCCESS:\n' + JSON.stringify(data, null, 2));
+            } catch (error) {
+                showResult('ERROR: ' + error.message + '\n\n(Đảm bảo BE đang chạy và có @CrossOrigin)');
+            }
+        }
+
+        // Test POST
+        async function testPost() {
+            try {
+                const newUser = { 
+                    name: "Test User " + Date.now(), 
+                    address: "Test Address" 
+                };
+                
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(newUser)
+                });
+                
+                const data = await response.json();
+                showResult('POST SUCCESS:\nĐã tạo: ' + JSON.stringify(data, null, 2));
+            } catch (error) {
+                showResult('ERROR: ' + error.message);
+            }
+        }
+
+        // Test PUT
+        async function testPut() {
+            try {
+                // Lấy user đầu tiên để update
+                const getResponse = await fetch(API_URL);
+                const users = await getResponse.json();
+                
+                if (users.length === 0) {
+                    showResult('ERROR: Không có user nào để update. Hãy tạo user trước!');
+                    return;
+                }
+                
+                const firstUser = users[0];
+                const updated = {
+                    name: firstUser.name + " (updated)",
+                    address: firstUser.address + " (new)"
+                };
+                
+                const response = await fetch(`${API_URL}/${firstUser.userID}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(updated)
+                });
+                
+                const data = await response.json();
+                showResult('PUT SUCCESS:\nĐã cập nhật: ' + JSON.stringify(data, null, 2));
+            } catch (error) {
+                showResult('ERROR: ' + error.message);
+            }
+        }
+
+        // Test DELETE
+        async function testDelete() {
+            try {
+                // Lấy user cuối cùng để xóa
+                const getResponse = await fetch(API_URL);
+                const users = await getResponse.json();
+                
+                if (users.length === 0) {
+                    showResult('ERROR: Không có user nào để xóa!');
+                    return;
+                }
+                
+                const lastUser = users[users.length - 1];
+                
+                const response = await fetch(`${API_URL}/${lastUser.userID}`, {
+                    method: 'DELETE'
+                });
+                
+                showResult(`DELETE SUCCESS:\nĐã xóa user ID: ${lastUser.userID}\nTên: ${lastUser.name}`);
+            } catch (error) {
+                showResult('ERROR: ' + error.message);
+            }
+        }
+    </script>
+</body>
+</html>
