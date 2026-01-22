@@ -39,7 +39,7 @@ public class SinhvienController {
         return svService.getSVbyMSv(msv);
     }
     @PutMapping("/{msv}")
-     Sinhvien updateSV(@RequestBody SinhvienUpdateRequest uRequest, @PathVariable String msv){
+     Sinhvien updateSV(@RequestBody @Valid SinhvienUpdateRequest uRequest, @PathVariable String msv){
         return svService.updateSV(uRequest,msv);
     }
     @DeleteMapping("/{msv}")

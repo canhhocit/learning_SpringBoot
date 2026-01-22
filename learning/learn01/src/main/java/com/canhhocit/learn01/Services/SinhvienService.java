@@ -17,11 +17,13 @@ public class SinhvienService {
 
     public Sinhvien createSinhvien(SinhvienCreationRequest request) {
         Sinhvien sv = new Sinhvien();
-
+        if(svRepo.existsByMsv(request.getMsv())){
+            throw new RuntimeException("MSV này đã tồn tại");
+        }
         if(svRepo.existsBySdt(request.getSdt())){
             throw new RuntimeException("SDT này đã tồn tại");
         }
-        
+        sv.setMsv(request.getMsv());
         sv.setHoten(request.getHoten());
         sv.setLop(request.getLop());
         sv.setSdt(request.getSdt());
@@ -38,6 +40,7 @@ public class SinhvienService {
 
     public Sinhvien updateSV(SinhvienUpdateRequest request, String msv) {
         Sinhvien sv = getSVbyMSv(msv);
+        // idea: check sdt khac sdt trc khi update && not exists =>done
         sv.setLop(request.getLop());
         sv.setSdt(request.getSdt());
         return svRepo.save(sv);

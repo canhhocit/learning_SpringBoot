@@ -9,4 +9,5 @@ import com.canhhocit.learn01.Entities.Sinhvien;
 @Repository
 public interface SinhvienRepository extends JpaRepository<Sinhvien,String>{
     boolean existsBySdt(String sdt);
+    boolean existsByMsv(String msv);
 }

@@ -5,6 +5,8 @@ import lombok.Data;
 
 @Data
 public class SinhvienCreationRequest {
+    @Size(min = 5,message = "Mã sinh viên phải có độ dài tối thiểu là 5!")
+    private String msv;
     private String hoten;
 
     private String lop;

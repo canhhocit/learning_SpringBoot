@@ -11,6 +11,7 @@ import com.example.lesson02_DB.dto.request.ApiResponse;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = Exception.class)
+    @SuppressWarnings("rawtypes")
     ResponseEntity<ApiResponse> handlingRuntimeException(RuntimeException ex) {
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.setCode(ErrorCode.UNCATEGORIZED_EXCEPTION.getCode());
@@ -19,6 +20,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = AppException.class)
+    @SuppressWarnings("rawtypes")
     ResponseEntity<ApiResponse> handlingAppException(AppException ex) {
         ErrorCode errorCode = ex.getErrorCode();
         ApiResponse apiResponse = new ApiResponse();
@@ -30,6 +32,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    @SuppressWarnings("rawtypes")
     ResponseEntity<ApiResponse> handlingValidation(MethodArgumentNotValidException ex) {
         String enumKey = ex.getFieldError().getDefaultMessage();
 
