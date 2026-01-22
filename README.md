@@ -1,7 +1,7 @@
-##### 🚀 Spring Boot: Hành trình vượt khó
-# 10/01/2026 - 10/04/2026
+# 🚀 Spring Boot: Hành trình vượt khó
+## 10/01/2026 - 10/04/2026
 
-###### Beginer -> Master
+### Beginer -> Master
 
 -- write once, run any where --
 
@@ -17,7 +17,7 @@ Xây dựng theo kiến trúc cố định:
 
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-==-=-=-=-=-=-=-=-=  
 
-### Đã học:
+## Đã học:
 - Các anotaion cơ bản
 - Quản lý exception tập trung ExceptionHadling
 - hash pass bằng thuật toán Bcrypt
@@ -25,7 +25,7 @@ Xây dựng theo kiến trúc cố định:
 - REsful API (CRUD cơ bản)
 - Validation cơ bản
 - FE: lấy api cơ bản
-### Hướng tới & chưa học:
+## Hướng tới & chưa học:
 - Authorization: phân quyền với PreAutho và PostAutho
 - Kiến trúc Spring Sercurity
 - UnitTest
@@ -35,7 +35,7 @@ Xây dựng theo kiến trúc cố định:
 ------------------------------------- END  -------------------------------------
   
 ___________________________________________________________________________________________  
-### iead personal Project:
+# iead personal Project:
 
   1.Cơ bản: Hệ thống Quản lý Thư viện (Library Management)
   
