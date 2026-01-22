@@ -8,8 +8,11 @@ Beginer -> Master
 ==================================================================  
 
 Xây dựng theo kiến trúc cố định:
-•	Controller → Service → Repository
+
+•	Controller -> Service -> Repository
+
 •	REST API
+
 •	DTO, Validation
 
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-==-=-=-=-=-=-=-=-=  
