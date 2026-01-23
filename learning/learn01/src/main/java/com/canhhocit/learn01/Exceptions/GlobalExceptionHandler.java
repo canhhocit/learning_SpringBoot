@@ -5,15 +5,46 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-@ControllerAdvice      
+import com.canhhocit.learn01.DTO.Request.ApiResponse;
+
+@ControllerAdvice
 public class GlobalExceptionHandler {
-    
-    @ExceptionHandler(value = RuntimeException.class)
-    ResponseEntity<String> handlingRuntimeException(RuntimeException exception){
-        return ResponseEntity.badRequest().body(exception.getMessage());
+
+    @SuppressWarnings("rawtypes")
+    @ExceptionHandler(value = Exception.class)
+    ResponseEntity<ApiResponse> handlingRuntimeException(RuntimeException exception) {
+        ApiResponse apiResponse = new ApiResponse();
+        apiResponse.setCode(ErrorCode.UNCATEGORIZED_EXCEPTION.getCode());
+        apiResponse.setMessage(ErrorCode.UNCATEGORIZED_EXCEPTION.getMessage());
+        return ResponseEntity.badRequest().body(apiResponse);
     }
+
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
-     ResponseEntity<String> handlingValidation(MethodArgumentNotValidException exception){
-        return ResponseEntity.badRequest().body(exception.getFieldError().getDefaultMessage());
+    @SuppressWarnings("rawtypes")
+    ResponseEntity<ApiResponse> handlingValidation(MethodArgumentNotValidException ex) {
+        String enumKey = ex.getFieldError().getDefaultMessage();
+
+        ErrorCode errorCode = ErrorCode.KEY_INVALID;
+        try {
+            errorCode = ErrorCode.valueOf(enumKey);
+
+        } catch (IllegalArgumentException e) {
+
+        }
+        ApiResponse apiResponse = new ApiResponse();
+
+        apiResponse.setCode(errorCode.getCode());
+        apiResponse.setMessage(errorCode.getMessage());
+        return ResponseEntity.badRequest().body(apiResponse);
+    }
+
+    @SuppressWarnings("rawtypes")
+    @ExceptionHandler(value = AppException.class)
+    ResponseEntity<ApiResponse> handlingAppException(AppException exception) {
+        ErrorCode errorCode = exception.getErrorCode();// lấy code
+        ApiResponse apiResponse = new ApiResponse<>();
+        apiResponse.setCode(errorCode.getCode());
+        apiResponse.setMessage(errorCode.getMessage());
+        return ResponseEntity.badRequest().body(apiResponse);
     }
 }

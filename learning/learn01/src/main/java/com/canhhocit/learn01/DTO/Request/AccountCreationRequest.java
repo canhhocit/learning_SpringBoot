@@ -5,8 +5,8 @@ import lombok.Data;
 
 @Data
 public class AccountCreationRequest {
-    @Size(min = 5, message = "Tên đăng nhập tối thiểu là 5")
+    @Size(min = 5, message = "USERNAME_INVALID")
     private String username;
-    @Size(min = 6,message = "Mật khẩu phải có tối thiểu 6 ký tự")
+    @Size(min = 6,message = "PASSWORD_INVALID")
     private String password;
 }

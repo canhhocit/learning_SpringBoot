@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.canhhocit.learn01.DTO.Request.AccountCreationRequest;
 import com.canhhocit.learn01.DTO.Request.AccountUpdateRequest;
+import com.canhhocit.learn01.DTO.Request.ApiResponse;
 import com.canhhocit.learn01.Entities.Account;
 import com.canhhocit.learn01.Services.AccountService;
 
@@ -26,8 +27,11 @@ public class AccountController {
     private AccountService acService;
 
     @PostMapping
-    Account createAcc(@RequestBody @Valid AccountCreationRequest request) {
-        return acService.createAccount(request);
+    ApiResponse<Account> createAcc(@RequestBody @Valid AccountCreationRequest request) {
+        ApiResponse<Account> apiResponse = new ApiResponse<>();
+
+        apiResponse.setResult(acService.createAccount(request));
+        return apiResponse;
     }
 
     @GetMapping

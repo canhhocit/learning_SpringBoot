@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.canhhocit.learn01.DTO.Request.AccountCreationRequest;
 import com.canhhocit.learn01.DTO.Request.AccountUpdateRequest;
 import com.canhhocit.learn01.Entities.Account;
+import com.canhhocit.learn01.Exceptions.AppException;
+import com.canhhocit.learn01.Exceptions.ErrorCode;
 import com.canhhocit.learn01.Repositories.AccountRepository;
 
 import jakarta.transaction.Transactional;
@@ -20,7 +22,7 @@ public class AccountService {
     public Account createAccount(AccountCreationRequest request) {
         Account ac = new Account();
         if (acRepo.existsByUsername(request.getUsername())) {
-            throw new RuntimeException("Username đã tồn tại!");
+            throw new AppException(ErrorCode.USER_EXISTED);
         }
         ac.setUsername(request.getUsername());
         ac.setPassword(request.getPassword());
@@ -33,15 +35,17 @@ public class AccountService {
 
     public Account getAccount(String username) {
         if (!acRepo.existsByUsername(username)) {
-            throw new RuntimeException("Không có tài khoản nào tồn tại với username là: " + username + " !");
+            throw new AppException(ErrorCode.USER_NOTEXISTED);
         }
         return acRepo.findByUsername(username);
     }
+
     @Transactional
-    // mở giao dịch DB, ins,upd,del đều cần,bên trên do JPA làm hộ r. do dây là hàm tự viết  thêm
+    // mở giao dịch DB, ins,upd,del đều cần,bên trên do JPA làm hộ r. do dây là hàm
+    // tự viết thêm
     public String deleteAccount(String username) {
         if (!acRepo.existsByUsername(username)) {
-            throw new RuntimeException("Không có tài khoản nào tồn tại với username là: " + username + " !");
+            throw new AppException(ErrorCode.USER_NOTEXISTED);
         }
         acRepo.deleteByUsername(username);
 
