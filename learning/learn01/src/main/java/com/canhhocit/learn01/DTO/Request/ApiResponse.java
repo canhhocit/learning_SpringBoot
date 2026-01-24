@@ -2,14 +2,24 @@ package com.canhhocit.learn01.DTO.Request;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 @Data
-// Khai báo cho Json biết là nếu field nào null thì ghi vào json
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
+// Khai báo cho Json biết là nếu field nào null thì k ghi vào json
 @JsonInclude(JsonInclude.Include.NON_NULL)
 
 public class ApiResponse<T> {
-    private int code=1000;
-    private String message;
-    private T result;
+    @Builder.Default
+    int code=1000;
+    String message;
+    T result;
 }

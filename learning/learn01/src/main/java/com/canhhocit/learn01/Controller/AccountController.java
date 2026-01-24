@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.canhhocit.learn01.DTO.Request.AccountCreationRequest;
 import com.canhhocit.learn01.DTO.Request.AccountUpdateRequest;
 import com.canhhocit.learn01.DTO.Request.ApiResponse;
+import com.canhhocit.learn01.DTO.Response.AccountResponse;
 import com.canhhocit.learn01.Entities.Account;
 import com.canhhocit.learn01.Services.AccountService;
 
@@ -40,12 +41,12 @@ public class AccountController {
     }
 
     @GetMapping("/{username}")
-    Account getAccount(@PathVariable String username) {
+    AccountResponse getAccount(@PathVariable String username) {
         return acService.getAccount(username);
     }
 
     @PutMapping("/{username}")
-    Account updateAccount(@RequestBody @Valid AccountUpdateRequest request, @PathVariable String username) {
+    AccountResponse updateAccount(@RequestBody @Valid AccountUpdateRequest request, @PathVariable String username) {
         return acService.updateAccount(request, username);
     }
 

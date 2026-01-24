@@ -24,6 +24,7 @@ Xây dựng theo kiến trúc cố định:
 - tạo, Authenticate = JWT
 - REsful API (CRUD cơ bản)
 - Validation cơ bản
+- Sử dụng thư viện lombok @ Mapstruct -> clean code;
 - FE: lấy api cơ bản
 ## Hướng tới & chưa học:
 - Authorization: phân quyền với PreAutho và PostAutho
@@ -75,3 +76,9 @@ Kỹ thuật:
  Unit Test
  
  ___________________________________________________________________________________________  
+ # Note:
+### Nên thay @autowire bằng:
+
+- `@RequiredArgsConstructor`: tạo constructor cho all các biến khai báo là final
+
+- '@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)' : tự động đưa các field không khai báo trở thành kiểu private final.
