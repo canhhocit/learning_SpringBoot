@@ -2,6 +2,8 @@ package com.canhhocit.learn01.Services;
 
 import java.util.List;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.canhhocit.learn01.DTO.Request.AccountCreationRequest;
@@ -32,6 +34,8 @@ public class AccountService {
         }
 
         Account ac = accountMapper.toAccount(request);
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+        ac.setPassword(passwordEncoder.encode(request.getPassword()));
         return acRepo.save(ac);
     }
 

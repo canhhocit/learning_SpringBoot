@@ -1,4 +1,11 @@
-# 🚀 Spring Boot: Hành trình vượt khó
+# Spring Boot: Hành trình vượt khó
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
 ## 10/01/2026 - 10/04/2026
 
 ### Beginer -> Master
@@ -21,7 +28,19 @@ Xây dựng theo kiến trúc cố định:
 - Các anotaion cơ bản
 - Quản lý exception tập trung ExceptionHadling
 - hash pass bằng thuật toán Bcrypt
-- tạo, Authenticate = JWT
+- JWT: Json web token: tạo & xác thực:
+
+    + JWT gồm 3 phần: header(chứa in4 về loại token & thuật toán để ký token) ,
+     payload(chứa nội dung token), signature(hash header + payload)
+      --
+     ![image](https://github.com/canhhocit/learning_SpringBoot/JWT.png)
+
+    + header sử dụng thuật toán : HS512 -- JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
+
+    + `https://generate-random.org/encryption-keys` : link đây đỡ phải tìm. generate chuỗi 32 bytes=256 bits cho thuật toán MACSigner(ký token)
+
+    + `https://www.jwt.io/` : test token
+
 - REsful API (CRUD cơ bản)
 - Validation cơ bản
 - Sử dụng thư viện lombok @ Mapstruct -> clean code;
@@ -81,4 +100,4 @@ Kỹ thuật:
 
 - `@RequiredArgsConstructor`: tạo constructor cho all các biến khai báo là final
 
-- '@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)' : tự động đưa các field không khai báo trở thành kiểu private final.
+- `@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)` : tự động đưa các field không khai báo trở thành kiểu private final.
