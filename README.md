@@ -101,3 +101,5 @@ Kỹ thuật:
 - `@RequiredArgsConstructor`: tạo constructor cho all các biến khai báo là final
 
 - `@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)` : tự động đưa các field không khai báo trở thành kiểu private final.
+
+- `@JsonInclude(JsonInclude.Include.NON_NULL)`: Khai báo cho Json biết là nếu field nào null thì k ghi vào json
