@@ -38,17 +38,17 @@ Xây dựng theo kiến trúc cố định:
 - Quản lý exception tập trung ExceptionHadling
 - hash pass bằng thuật toán Bcrypt
 - JWT: Json web token: tạo & xác thực:
-
-
 - REsful API (CRUD cơ bản)
 - Validation cơ bản
 - Sử dụng thư viện lombok @ Mapstruct -> clean code;
+- Kiến trúc Spring Sercurity với cấu hình JWT -> authentication
+- Authorization với JWT (next day)
 - FE: lấy api cơ bản
 
 ## Hướng tới & chưa học:
 
 - Authorization: phân quyền với PreAutho và PostAutho
-- Kiến trúc Spring Sercurity
+
 - UnitTest
 - deploy Docker
 - ...
