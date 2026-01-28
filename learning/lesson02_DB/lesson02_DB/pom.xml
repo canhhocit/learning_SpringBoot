@@ -77,12 +77,12 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-crypto</artifactId>
         </dependency>
-        <!-- Thu vien sd token -->
-        <dependency>
+        <!-- Thu vien sd token đã bao gồm trong oauth2 -->
+        <!-- <dependency>
             <groupId>com.nimbusds</groupId>
             <artifactId>nimbus-jose-jwt</artifactId>
             <version>9.30.1</version>
-        </dependency>
+        </dependency> -->
         <!-- Spring Security -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

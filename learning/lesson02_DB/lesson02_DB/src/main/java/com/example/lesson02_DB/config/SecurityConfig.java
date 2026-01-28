@@ -1,21 +1,59 @@
 package com.example.lesson02_DB.config;
 
 
+import javax.crypto.spec.SecretKeySpec;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private final String [] ENDPOINTS_LIST={"/users","/auth/token","/auth/introspect"};
+
+    @Value("${jwt.signerKey}")
+    private String signerKey;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        
+        // cho phép endpoint này được thực thi khi chưa JWT
+        httpSecurity.authorizeHttpRequests(request ->request 
+            .requestMatchers(HttpMethod.POST,ENDPOINTS_LIST).permitAll()
+            // .requestMatchers(HttpMethod.POST,"/auth/token","/auth/introspect").permitAll()
+            .anyRequest().authenticated());
 
+        //dki 1 provider manager(authentication provider) -> support JWT(inject để authen(validate))
+        //lúc này có thể dán token để unlock các method Get/post/put/delete chưa được mở khóa mặc định
+        httpSecurity.oauth2ResourceServer(oauth2 -> oauth2
+            .jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder()))
+        );
+
+
+
+        // tắt csrf
+        // httpSecurity.csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable());
+        // rút gọn 
+        httpSecurity.csrf(AbstractHttpConfigurer::disable);
         return httpSecurity.build();
+    }
+
+    // decoder là Interface nên cần implement 
+    @Bean
+    JwtDecoder jwtDecoder(){
+        SecretKeySpec secretKeySpec = new SecretKeySpec(signerKey.getBytes(), "HS512");
+        return  NimbusJwtDecoder
+        .withSecretKey(secretKeySpec)
+        .macAlgorithm(MacAlgorithm.HS512)
+        .build();
     }
 
 }
