@@ -93,7 +93,7 @@ Tính năng: Đặt vé xem phim/phòng khách sạn, gửi email xác nhận t�
 
 Kỹ thuật:
 
- Spring Boot Email: Gửi mail thông báo khi đặt hàng thành công.
+ Spring Boot Email: Gửi mail thông báo khi đặt hàng thành công, gửi mail về admin khi có người đặt hàng xong(mail 2 chiều).
  
  Swagger/OpenAPI
  
