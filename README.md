@@ -1,10 +1,16 @@
 # Spring Boot: Hành trình vượt khó
   .   ____          _            __ _ _
+  
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+ 
 ( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+
  \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+ 
   '  |____| .__|_| |_|_| |_\__, | / / / /
+  
  =========|_|==============|___/=/_/_/_/
+ 
 
 ## 10/01/2026 - 10/04/2026
 
@@ -32,7 +38,6 @@ Xây dựng theo kiến trúc cố định:
 
     + JWT gồm 3 phần: header(chứa in4 về loại token & thuật toán để ký token) ,
      payload(chứa nội dung token), signature(hash header + payload)
-      --
      ![image](https://github.com/canhhocit/learning_SpringBoot/JWT.png)
 
     + header sử dụng thuật toán : HS512 -- JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
