@@ -2,11 +2,17 @@
 
 ```text
   .   ____          _            __ _ _
+  
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+ 
 ( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+
  \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+ 
   '  |____| .__|_| |_|_| |_\__, | / / / /
+  
  =========|_|==============|___/=/_/_/_/
+ 
 
 ## 10/01/2026 - 10/04/2026
 
@@ -32,6 +38,7 @@ Xây dựng theo kiến trúc cố định:
 - Quản lý exception tập trung ExceptionHadling
 - hash pass bằng thuật toán Bcrypt
 - JWT: Json web token: tạo & xác thực:
+
 
 - REsful API (CRUD cơ bản)
 - Validation cơ bản
@@ -105,6 +112,7 @@ Tính năng: Đặt vé xem phim/phòng khách sạn, gửi email xác nhận t�
 
 Kỹ thuật:
 
+
 Spring Boot Email: Gửi mail thông báo khi đặt hàng thành công.
 
 Swagger/OpenAPI
@@ -114,6 +122,16 @@ Unit Test
 ---
 
 # Note:
+
+
+ Spring Boot Email: Gửi mail thông báo khi đặt hàng thành công, gửi mail về admin khi có người đặt hàng xong(mail 2 chiều).
+ 
+ Swagger/OpenAPI
+ 
+ Unit Test
+ 
+ ___________________________________________________________________________________________  
+ # Note:
 
 ### Nên thay @autowire bằng:
 
