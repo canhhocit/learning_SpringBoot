@@ -4,16 +4,19 @@ import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.StringJoiner;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.beans.factory.annotation.Value; 
 
 import com.example.lesson02_DB.dto.request.AuthenticationRequest;
 import com.example.lesson02_DB.dto.request.IntrospectRequest;
 import com.example.lesson02_DB.dto.response.AuthenticationResponse;
 import com.example.lesson02_DB.dto.response.IntrospectResponse;
+import com.example.lesson02_DB.entity.User;
 import com.example.lesson02_DB.exception.AppException;
 import com.example.lesson02_DB.exception.ErrorCode;
 import com.example.lesson02_DB.repositories.UserRepository;
@@ -79,7 +82,7 @@ public class AuthenticationService {
         if (!authenticated) {
             throw new AppException(ErrorCode.UNAUTHETICATED);
         }
-        var token = generateToken(request.getUsername());
+        var token = generateToken(user);
 
         return AuthenticationResponse.builder()
                 .token(token)
@@ -88,16 +91,16 @@ public class AuthenticationService {
     }
 
     // method tao token, token có kdl String -> String
-    private String generateToken(String username) {
+    private String generateToken(User user) {
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
 
         // Các data trong body gọi là claim
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
-                .subject(username)
+                .subject(user.getUsername())
                 .issuer("canhhocit.be")
                 .issueTime(new Date())
                 .expirationTime(new Date(Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli()))
-                .claim("customClaim", "Custom")
+                .claim("scope", buildScope(user))
                 .build();
 
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());
@@ -111,5 +114,15 @@ public class AuthenticationService {
             throw new RuntimeException(e);
         }
 
+    }
+
+    //roles
+    private String buildScope(User user){
+        StringJoiner stringJoiner = new StringJoiner(" ");
+        if(!CollectionUtils.isEmpty(user.getRoles())){
+            // user.getRoles().forEach(s -> stringJoiner.add(s));
+            user.getRoles().forEach(stringJoiner::add);
+        }
+        return stringJoiner.toString();
     }
 }

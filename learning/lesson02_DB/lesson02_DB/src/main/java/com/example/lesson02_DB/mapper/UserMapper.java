@@ -12,6 +12,7 @@ import com.example.lesson02_DB.entity.User;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "roles", ignore = true)
     User toUser(UserCreationRequest request);
     
     // @Mapping (source = "firstname", target = "lastname")
@@ -19,6 +20,7 @@ public interface UserMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "username", ignore = true)
-    void updatUser(@MappingTarget User u, UserUpdateRequest request);
+    @Mapping(target = "roles", ignore = true)
+    void updateUser(@MappingTarget User u, UserUpdateRequest request);
 
 }

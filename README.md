@@ -1,6 +1,5 @@
 # Spring Boot: Hành trình vượt khó
 
-```text
   .   ____          _            __ _ _
   
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -42,7 +41,7 @@ Xây dựng theo kiến trúc cố định:
 - Validation cơ bản
 - Sử dụng thư viện lombok @ Mapstruct -> clean code;
 - Kiến trúc Spring Sercurity với cấu hình JWT -> authentication
-- Authorization với JWT (next day)
+- Authorization với JWT trong Spring Sercurity (next day)
 - FE: lấy api cơ bản
 
 ## Hướng tới & chưa học:
@@ -50,11 +49,15 @@ Xây dựng theo kiến trúc cố định:
 - Authorization: phân quyền với PreAutho và PostAutho
 
 - UnitTest
-- deploy Docker
+- Build Docker image
 - ...
 
 ------------------------------------- END ----------------------------------------
-
+## `NOTE`: Các kiến thức cần học thêm:
+  - AWS, Docker,k8s
+  - deployment
+  - Tối ưu hệ thống
+  - ...
 ### JWT
 
 - JWT gồm 3 phần: header(chứa in4 về loại token & thuật toán để ký token) ,
@@ -133,7 +136,7 @@ Unit Test
  ___________________________________________________________________________________________  
  # Note:
 
-### Nên thay @autowire bằng:
+### Nên thay @autowire bằng: `@RequiredArgsConstructor` + `@FieldDefaults` do lombok sẽ generate constructor và biến đó sẽ được inject vào đó
 
 - `@RequiredArgsConstructor`: tạo constructor cho all các biến khai báo là final
 
