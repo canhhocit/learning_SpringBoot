@@ -107,7 +107,7 @@ Spring Security + JWT: đăng nhập và phân quyền.
 
 Mapping Entities: One-to-Many, Many-to-Many.
 
-Exception Handling: Xử lý lỗi tập trung bằng @ControllerAdvice.
+Exception Handling: Xử lý lỗi tập trung bằng @ControllerAdvice.// riêng 401 thì đặc biệt, phải config để bắt 
 
 3.Nâng cao: Hệ thống Đặt chỗ (Booking System)
 

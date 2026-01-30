@@ -1,6 +1,5 @@
 package com.example.lesson02_DB.config;
 
-
 import javax.crypto.spec.SecretKeySpec;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -20,66 +19,68 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
-
 @Configuration
 @EnableWebSecurity
 // author with method
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private final String [] ENDPOINTS_LIST={"/users","/auth/token","/auth/introspect"};
+    private final String[] ENDPOINTS_LIST = { "/users", "/auth/token", "/auth/introspect" };
 
     @Value("${jwt.signerKey}")
     private String signerKey;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         // cho phép endpoint này được thực thi khi chưa JWT
-        httpSecurity.authorizeHttpRequests(request ->request 
-            .requestMatchers(HttpMethod.POST,ENDPOINTS_LIST).permitAll()
-            // .requestMatchers(HttpMethod.GET,"/users")
-            // author with endpoint
+        httpSecurity.authorizeHttpRequests(request -> request
+                .requestMatchers(HttpMethod.POST, ENDPOINTS_LIST).permitAll()
+                // author with endpoint
+                // .requestMatchers(HttpMethod.GET,"/users")
                 // .hasAuthority("ROLE_ADMIN")
                 // .hasRole(Role.ADMIN.name())
-            .anyRequest().authenticated());
+                .anyRequest().authenticated());
 
-        //dki 1 provider manager(authentication provider) -> support JWT(inject để authen(validate))
-        //lúc này có thể dán token để unlock các method Get/post/put/delete chưa được mở khóa mặc định
+        // dki 1 provider manager(authentication provider) -> support JWT(inject để
+        // authen(validate))
+        // lúc này có thể dán token để unlock các method Get/post/put/delete chưa được
+        // mở khóa mặc định
         httpSecurity.oauth2ResourceServer(oauth2 -> oauth2
-            .jwt(jwtConfigurer -> 
-                jwtConfigurer.decoder(jwtDecoder())
-                    .jwtAuthenticationConverter(jwtAuthenticationConverter()))
+                .jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder())
+                        .jwtAuthenticationConverter(jwtAuthenticationConverter()))
+                .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
         );
 
-
-
         // tắt csrf
-        // httpSecurity.csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable());
-        // rút gọn 
+        // httpSecurity.csrf(httpSecurityCsrfConfigurer ->
+        // httpSecurityCsrfConfigurer.disable());
+        // rút gọn
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
         return httpSecurity.build();
     }
 
-    @Bean 
-    JwtAuthenticationConverter jwtAuthenticationConverter(){
+    @Bean
+    JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
         jwtGrantedAuthoritiesConverter.setAuthorityPrefix("ROLE_");
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
         return jwtAuthenticationConverter;
     }
-    // decoder là Interface nên cần implement 
+
+    // decoder là Interface nên cần implement
     @Bean
-    JwtDecoder jwtDecoder(){
+    JwtDecoder jwtDecoder() {
         SecretKeySpec secretKeySpec = new SecretKeySpec(signerKey.getBytes(), "HS512");
-        return  NimbusJwtDecoder
-        .withSecretKey(secretKeySpec)
-        .macAlgorithm(MacAlgorithm.HS512)
-        .build();
+        return NimbusJwtDecoder
+                .withSecretKey(secretKeySpec)
+                .macAlgorithm(MacAlgorithm.HS512)
+                .build();
     }
 
     // config để dùng nhiều nơi
     @Bean
-    PasswordEncoder passwordEncoder(){
+    PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(10);
     }
 
