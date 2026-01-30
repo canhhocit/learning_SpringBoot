@@ -3,6 +3,9 @@ package com.example.lesson02_DB.services;
 import java.util.HashSet;
 import java.util.List;
 
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +23,12 @@ import com.example.lesson02_DB.repositories.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Slf4j
 public class UserService {
     UserRepository userRepo;
 
@@ -61,8 +66,9 @@ public class UserService {
                 .result(userMapper.toUserResponse(userRepo.save(user)))
                 .build();
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     public ApiResponse<List<UserResponse>> getUsers() {
+        log.info("IN METHOD GET USERS");
         List<UserResponse> users = userRepo.findAll()
                 .stream()
                 .map(userMapper::toUserResponse)
@@ -72,8 +78,14 @@ public class UserService {
                 .result(users)
                 .build();
     }
+    // GET ONE
+    // @PostAuthorize("hasRole('ADMIN')")
+    //@PostAuthorize("returnObject.username == authentication.username")
+    // do method ở đây trả về ApiResponse<UserResponse> nên k phải object: chuyển đổi: 
+    @PostAuthorize("returnObject.result.username == authentication.name")
 
     public ApiResponse<UserResponse> getUser(String id) {
+        log.info("IN METHOD GET USER BY ID");
         User user = userRepo.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOTEXISTED));
 
@@ -81,7 +93,15 @@ public class UserService {
                 .result(userMapper.toUserResponse(user))
                 .build();
     }
-
+    public ApiResponse<UserResponse> getMyInfo(){
+        var context = SecurityContextHolder.getContext();
+        String username = context.getAuthentication().getName();
+        User findUser = userRepo.findByUsername(username).orElseThrow(
+            () -> new AppException(ErrorCode.USER_NOTEXISTED));
+        return ApiResponse.<UserResponse>builder()
+                .result(userMapper.toUserResponse(findUser))
+                .build();
+    }
     // public UserResponse updateUser(String id, UserUpdateRequest request) {
     // User u = userRepo.findById(id).orElseThrow(() -> new RuntimeException("User k
     // ton tai"));

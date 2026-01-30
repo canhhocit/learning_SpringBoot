@@ -63,6 +63,10 @@ public class UserController {
     ApiResponse<UserResponse> getUser(@PathVariable("userId") String userId) {
         return uService.getUser(userId);
     }
+     @GetMapping("/myInfo")
+    ApiResponse<UserResponse> getMyInfo() {
+        return uService.getMyInfo();
+    }
 
     // update
     @PutMapping("/{userId}")

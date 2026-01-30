@@ -4,5 +4,7 @@ package com.example.lesson02_DB.enums;
 // // giúp code rõ nghĩa – an toàn – dễ bảo trì hơn so với static final
 public enum Role {
     ADMIN,
-    USER
+    USER,
+    STAFF
 }
+ 
