@@ -1,13 +1,10 @@
 package com.example.lesson02_DB.entity;
 
-import java.time.LocalDate;
 import java.util.Set;
 
 import org.hibernate.annotations.ManyToAny;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -16,6 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
+
 @Getter
 @Setter
 @Builder
@@ -23,18 +21,10 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-public class User {
+public class Role {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    String id;
-    String username;
-    String password;
-    String firstname;
-    String lastname;
-    LocalDate dob;
-    // mọi phần tử trong set là unique
-    // list cho phép nhiều ptu tồn tại (uer,user) còn set chỉ cho phép có 1 item user tồn tại
+    String name;
+    String description;
     @ManyToAny
-    Set<Role> roles;
-    
+    Set<Permission> permission;
 }

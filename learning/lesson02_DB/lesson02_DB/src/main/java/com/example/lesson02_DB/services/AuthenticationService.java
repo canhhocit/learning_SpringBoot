@@ -9,7 +9,7 @@ import java.util.StringJoiner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
+// import org.springframework.util.CollectionUtils;
 import org.springframework.beans.factory.annotation.Value; 
 
 import com.example.lesson02_DB.dto.request.AuthenticationRequest;
@@ -119,10 +119,10 @@ public class AuthenticationService {
     //roles
     private String buildScope(User user){
         StringJoiner stringJoiner = new StringJoiner(" ");
-        if(!CollectionUtils.isEmpty(user.getRoles())){
-            // user.getRoles().forEach(s -> stringJoiner.add(s));
-            user.getRoles().forEach(stringJoiner::add);
-        }
+        // if(!CollectionUtils.isEmpty(user.getRoles())){
+        //     // user.getRoles().forEach(s -> stringJoiner.add(s));
+        //     user.getRoles().forEach(stringJoiner::add);
+        // }
         return stringJoiner.toString();
     }
 }

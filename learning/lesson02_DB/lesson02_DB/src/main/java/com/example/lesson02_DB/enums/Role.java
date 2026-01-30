@@ -7,4 +7,5 @@ public enum Role {
     USER,
     STAFF
 }
- 
+//  1 user -> many role
+// 1 role -> many Permission
