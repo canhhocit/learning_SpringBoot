@@ -1,6 +1,7 @@
 package com.example.lesson02_DB.dto.request;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -20,5 +21,6 @@ public class UserUpdateRequest {
     String lastname;
     LocalDate dob;
     
+    List<String> roles;
     
 }

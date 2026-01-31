@@ -18,6 +18,7 @@ import com.example.lesson02_DB.enums.Role;
 import com.example.lesson02_DB.exception.AppException;
 import com.example.lesson02_DB.exception.ErrorCode;
 import com.example.lesson02_DB.mapper.UserMapper;
+import com.example.lesson02_DB.repositories.RoleRepository;
 import com.example.lesson02_DB.repositories.UserRepository;
 
 import lombok.AccessLevel;
@@ -31,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class UserService {
     UserRepository userRepo;
-
+    RoleRepository roleRepository;
     UserMapper userMapper;
 
     PasswordEncoder passwordEncoder;
@@ -66,7 +67,13 @@ public class UserService {
                 .result(userMapper.toUserResponse(userRepo.save(user)))
                 .build();
     }
-    @PreAuthorize("hasRole('ADMIN')")
+   @PreAuthorize("hasRole('ADMIN')")
+    //biết là ROLE_ -> dùng hasRole
+    // ví dụ  
+    // @PreAuthorize("hasRole('APPROVE_POST')")  // k hash dc do k có ROLE_ ở đầu
+    //-> khắc phục
+    // @PreAuthorize("hasAuthority('APPROVE_POST')")
+    // @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ApiResponse<List<UserResponse>> getUsers() {
         log.info("IN METHOD GET USERS");
         List<UserResponse> users = userRepo.findAll()
@@ -117,6 +124,11 @@ public class UserService {
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOTEXISTED));
 
         userMapper.updateUser(user, request);
+
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        var roles = roleRepository.findAllById(request.getRoles());
+        user.setRoles(new HashSet<>(roles));
 
         return ApiResponse.<UserResponse>builder()
                 .result(userMapper.toUserResponse(userRepo.save(user)))
