@@ -2,6 +2,8 @@ package com.example.lesson02_DB.dto.request;
 
 import java.time.LocalDate;
 
+import com.example.lesson02_DB.validator.DobConstraint;
+
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -22,8 +24,10 @@ public class UserCreationRequest {
     @Size(min = 5, message = "PASSWORD_INVALID")
 
     String password;
-    String firstname;
+    String firstname; 
     String lastname;
+    
+    @DobConstraint(min = 16, message = "INVALID_DOB")
     LocalDate dob;
 
 }
