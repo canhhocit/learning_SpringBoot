@@ -42,11 +42,11 @@ Xây dựng theo kiến trúc cố định:
 - Sử dụng thư viện lombok @ Mapstruct -> clean code;
 - Kiến trúc Spring Sercurity với cấu hình JWT -> authentication
 - Authorization với JWT trong Spring Sercurity (next day)
+- Lưu/ xem ảnh trên DB
 - FE: lấy api cơ bản
 
-## Hướng tới & chưa học:
-
 - Authorization: phân quyền với PreAutho và PostAutho
+## Hướng tới & chưa học:
 
 - UnitTest
 - Build Docker image
