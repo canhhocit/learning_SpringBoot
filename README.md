@@ -1,27 +1,17 @@
-# Spring Boot: Hành trình vượt khó
+  # Spring Boot: Hành trình vượt khó
 
-  .   ____          _            __ _ _
-  
- /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
- 
-( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
-
- \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
- 
-  '  |____| .__|_| |_|_| |_\__, | / / / /
-  
- =========|_|==============|___/=/_/_/_/
- 
+  ----- `Backend Java thiên hướng mở rộng FullStack` -----
 
 ## 10/01/2026 - 10/04/2026
 
 ### Beginer -> Master
 
--- write once, run any where --
+
+-- `write once, run any where` --
 
 ==================================================================
 
-Xây dựng theo kiến trúc cố định:
+Xây dựng theo kiến trúc:
 
 • Controller -> Service -> Repository
 
@@ -42,28 +32,41 @@ Xây dựng theo kiến trúc cố định:
 - Sử dụng thư viện lombok @ Mapstruct -> clean code;
 - Kiến trúc Spring Sercurity với cấu hình JWT -> authentication
 - Authorization với JWT trong Spring Sercurity (next day)
-- Lưu/ xem ảnh trên DB
+- Upload file
+- Refresh Token: user: requestAPI(token) --> bakcend: (token invalid)
+          BE --new Token--> client --> requestAPI(new token) --->BE(ok)
 - FE: lấy api cơ bản
 
 - Authorization: phân quyền với PreAutho và PostAutho
+
 ## Hướng tới & chưa học:
 
 - UnitTest
 - Build Docker image
 - ...
+  #### Học FE ở múc đủ dùng:
+  - React cơ bản
+
+  - Call API
+
+  - Login + token
+  `MỤC ĐÍCH`: hiểu FE
 
 ------------------------------------- END ----------------------------------------
+
 ## `NOTE`: Các kiến thức cần học thêm:
-  - AWS, Docker,k8s
-  - deployment
-  - Tối ưu hệ thống
-  - ...
+
+- AWS, Docker,k8s
+- deployment
+- Tối ưu hệ thống
+- ...
+
 ### JWT
 
 - JWT gồm 3 phần: header(chứa in4 về loại token & thuật toán để ký token) ,
-     payload(chứa nội dung token), signature(hash header - payload)
-      --
-     ![image](https://github.com/canhhocit/learning_SpringBoot/blob/main/JWT.png)
+  payload(chứa nội dung token), signature(hash header - payload)
+  --
+  ![image](https://github.com/canhhocit/learning_SpringBoot/blob/main/JWT.png)
 
 - header sử dụng thuật toán : HS512 -- JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
 
@@ -79,6 +82,7 @@ Xây dựng theo kiến trúc cố định:
 GET → được coi là safe method → KHÔNG cần CSRF token
 
 POST / PUT / DELETE → BẮT BUỘC có CSRF token
+
 ###### Test postman = cách chọn Bearer Token
 
 ---
@@ -107,7 +111,7 @@ Spring Security + JWT: đăng nhập và phân quyền.
 
 Mapping Entities: One-to-Many, Many-to-Many.
 
-Exception Handling: Xử lý lỗi tập trung bằng @ControllerAdvice.// riêng 401 thì đặc biệt, phải config để bắt 
+Exception Handling: Xử lý lỗi tập trung bằng @ControllerAdvice.// riêng 401 thì đặc biệt, phải config để bắt
 
 3.Nâng cao: Hệ thống Đặt chỗ (Booking System)
 
@@ -115,15 +119,17 @@ Tính năng: Đặt vé xem phim/phòng khách sạn, gửi email xác nhận t�
 
 Kỹ thuật:
 
- Spring Boot Email: Gửi mail thông báo khi đặt hàng thành công, gửi mail về admin khi có người đặt hàng xong(mail 2 chiều).
- 
- Swagger/OpenAPI
- 
- Unit Test
+Spring Boot Email: Gửi mail thông báo khi đặt hàng thành công, gửi mail về admin khi có người đặt hàng xong(mail 2 chiều).
 
- ---
- ___________________________________________________________________________________________  
- # Note:
+Swagger/OpenAPI
+
+Unit Test
+
+---
+
+---
+
+# Note:
 
 ### Nên thay @autowire bằng: `@RequiredArgsConstructor` + `@FieldDefaults` do lombok sẽ generate constructor và biến đó sẽ được inject vào đó
 
