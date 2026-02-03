@@ -31,19 +31,19 @@ Xây dựng theo kiến trúc:
 - Validation cơ bản
 - Sử dụng thư viện lombok @ Mapstruct -> clean code;
 - Kiến trúc Spring Sercurity với cấu hình JWT -> authentication
-- Authorization với JWT trong Spring Sercurity (next day)
 - Upload file
 - Refresh Token: user: requestAPI(token) --> bakcend: (token invalid)
           BE --new Token--> client --> requestAPI(new token) --->BE(ok)
-- FE: lấy api cơ bản
-
 - Authorization: phân quyền với PreAutho và PostAutho
+- UnitTest : sử dụng anotation `@SpringBootTest` &`@Test` // `Nguyên tắc`: Viết layer trên thì Moc layer dưới
 
+
+- FE: lấy api cơ bản
 ## Hướng tới & chưa học:
 
-- UnitTest
 - Build Docker image
-- ...
+- aws
+- swagger
   #### Học FE ở múc đủ dùng:
   - React cơ bản
 

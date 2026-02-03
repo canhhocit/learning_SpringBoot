@@ -39,6 +39,7 @@ public class UserService {
 
     public ApiResponse<UserResponse> createUser(UserCreationRequest request) {
 
+        log.info("SERVICE: create User");
         if (userRepo.existsByUsername(request.getUsername())) {
             throw new AppException(ErrorCode.USER_EXISTED);
         }
