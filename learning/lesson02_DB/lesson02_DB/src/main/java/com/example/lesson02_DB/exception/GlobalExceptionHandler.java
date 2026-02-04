@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.example.lesson02_DB.dto.request.ApiResponse;
 
 import jakarta.validation.ConstraintViolation;
-import lombok.var;
 import lombok.extern.slf4j.Slf4j;
 
 @ControllerAdvice

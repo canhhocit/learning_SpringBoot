@@ -1,6 +1,7 @@
 package com.example.lesson02_DB.services;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
@@ -112,5 +114,38 @@ public class UserServiceTest {
         Assertions.assertThatThrownBy(() -> userService.createUser(request))
                 .isInstanceOf(AppException.class)
                 .hasFieldOrPropertyWithValue("errorCode", ErrorCode.USER_EXISTED);
+    }
+
+     @Test
+    @WithMockUser(username = "canhhuu") // Mock user đang đăng nhập
+    void getMyInfo_valid_success() {
+        // GIVEN
+        when(userRepository.findByUsername(anyString()))
+                .thenReturn(Optional.of(user));
+
+        // WHEN
+        ApiResponse<UserResponse> response = userService.getMyInfo();
+
+        // THEN
+        Assertions.assertThat(response.getCode()).isEqualTo(1000);
+        Assertions.assertThat(response.getResult()).isNotNull();
+        Assertions.assertThat(response.getResult().getUsername()).isEqualTo("canhhuu");
+        Assertions.assertThat(response.getResult().getFirstname()).isEqualTo("Canh");
+        Assertions.assertThat(response.getResult().getLastname()).isEqualTo("Pham Huu");
+    }
+
+    @Test
+    @WithMockUser(username = "notexist") // User không tồn tại
+    void getMyInfo_userNotFound_fail() {
+        // GIVEN
+        when(userRepository.findByUsername(anyString()))
+                .thenReturn(Optional.empty());
+
+        // WHEN & THEN
+        var exception = assertThrows(AppException.class,
+                () -> userService.getMyInfo());
+
+        Assertions.assertThat(exception.getErrorCode())
+                .isEqualTo(ErrorCode.USER_NOTEXISTED);
     }
 }

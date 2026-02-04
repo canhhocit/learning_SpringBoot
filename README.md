@@ -37,6 +37,7 @@ Xây dựng theo kiến trúc:
 - Authorization: phân quyền với PreAutho và PostAutho
 - UnitTest : sử dụng anotation `@SpringBootTest` &`@Test` // `Nguyên tắc`: Viết layer trên thì Moc layer dưới
 
+- Đo code với JaCoCo 
 
 - FE: lấy api cơ bản
 ## Hướng tới & chưa học:

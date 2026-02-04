@@ -12,7 +12,6 @@ import com.example.lesson02_DB.repositories.PermissionRepository;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import lombok.var;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 
