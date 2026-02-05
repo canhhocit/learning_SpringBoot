@@ -31,112 +31,110 @@ import lombok.extern.slf4j.Slf4j;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
 public class UserService {
-    UserRepository userRepo;
-    RoleRepository roleRepository;
-    UserMapper userMapper;
+  UserRepository userRepo;
+  RoleRepository roleRepository;
+  UserMapper userMapper;
 
-    PasswordEncoder passwordEncoder;
+  PasswordEncoder passwordEncoder;
 
-    public ApiResponse<UserResponse> createUser(UserCreationRequest request) {
+  public ApiResponse<UserResponse> createUser(UserCreationRequest request) {
 
-        log.info("SERVICE: create User");
-        if (userRepo.existsByUsername(request.getUsername())) {
-            throw new AppException(ErrorCode.USER_EXISTED);
-        }
-        // tac dung cua lombok @builder
-        // userCreationRequest request2 = userCreationRequest.builder()
-        // .username("")
-        // .firstname(" ")
-        // .build();
-        // trc khi sd mapstruct
-        // user user = new user();
-        // user.setUsername(request.getUsername());
-        // user.setPassword(request.getPassword());
-        // user.setFirstname(request.getFirstname());
-        // user.setLastname(request.getLastname());
-        // user.setDob(request.getDob());
-        // sd mapstruct
-        User user = userMapper.toUser(request);
-        // mã hóa pass = Bcrypt
-        // PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-
-        HashSet<String> roles = new HashSet<>();
-        roles.add(Role.USER.name());
-        // user.setRoles(roles);
-        return ApiResponse.<UserResponse>builder()
-                .result(userMapper.toUserResponse(userRepo.save(user)))
-                .build();
+    log.info("SERVICE: create User");
+    if (userRepo.existsByUsername(request.getUsername())) {
+      throw new AppException(ErrorCode.USER_EXISTED);
     }
-   @PreAuthorize("hasRole('ADMIN')")
-    //biết là ROLE_ -> dùng hasRole
-    // ví dụ  
-    // @PreAuthorize("hasRole('APPROVE_POST')")  // k hash dc do k có ROLE_ ở đầu
-    //-> khắc phục
-    // @PreAuthorize("hasAuthority('APPROVE_POST')")
-    // @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ApiResponse<List<UserResponse>> getUsers() {
-        log.info("IN METHOD GET USERS");
-        List<UserResponse> users = userRepo.findAll()
-                .stream()
-                .map(userMapper::toUserResponse)
-                .toList();
+    // tac dung cua lombok @builder
+    // userCreationRequest request2 = userCreationRequest.builder()
+    // .username("")
+    // .firstname(" ")
+    // .build();
+    // trc khi sd mapstruct
+    // user user = new user();
+    // user.setUsername(request.getUsername());
+    // user.setPassword(request.getPassword());
+    // user.setFirstname(request.getFirstname());
+    // user.setLastname(request.getLastname());
+    // user.setDob(request.getDob());
+    // sd mapstruct
+    User user = userMapper.toUser(request);
+    // mã hóa pass = Bcrypt
+    // PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+    user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        return ApiResponse.<List<UserResponse>>builder()
-                .result(users)
-                .build();
-    }
-    // GET ONE
-    // @PostAuthorize("hasRole('ADMIN')")
-    //@PostAuthorize("returnObject.username == authentication.username")
-    // do method ở đây trả về ApiResponse<UserResponse> nên k phải object: chuyển đổi: 
-    @PostAuthorize("returnObject.result.username == authentication.name")
+    HashSet<String> roles = new HashSet<>();
+    roles.add(Role.USER.name());
+    // user.setRoles(roles);
+    return ApiResponse.<UserResponse>builder()
+        .result(userMapper.toUserResponse(userRepo.save(user)))
+        .build();
+  }
 
-    public ApiResponse<UserResponse> getUser(String id) {
-        log.info("IN METHOD GET USER BY ID");
-        User user = userRepo.findById(id)
-                .orElseThrow(() -> new AppException(ErrorCode.USER_NOTEXISTED));
+  @PreAuthorize("hasRole('ADMIN')")
+  // biết là ROLE_ -> dùng hasRole
+  // ví dụ
+  // @PreAuthorize("hasRole('APPROVE_POST')") // k hash dc do k có ROLE_ ở đầu
+  // -> khắc phục
+  // @PreAuthorize("hasAuthority('APPROVE_POST')")
+  // @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+  public ApiResponse<List<UserResponse>> getUsers() {
+    log.info("IN METHOD GET USERS");
+    List<UserResponse> users = userRepo.findAll().stream().map(userMapper::toUserResponse).toList();
 
-        return ApiResponse.<UserResponse>builder()
-                .result(userMapper.toUserResponse(user))
-                .build();
-    }
-    public ApiResponse<UserResponse> getMyInfo(){
-        var context = SecurityContextHolder.getContext();
-        String username = context.getAuthentication().getName();
-        User findUser = userRepo.findByUsername(username).orElseThrow(
-            () -> new AppException(ErrorCode.USER_NOTEXISTED));
-        return ApiResponse.<UserResponse>builder()
-                .result(userMapper.toUserResponse(findUser))
-                .build();
-    }
-    // public UserResponse updateUser(String id, UserUpdateRequest request) {
-    // User u = userRepo.findById(id).orElseThrow(() -> new RuntimeException("User k
-    // ton tai"));
-    // userMapper.updatUser(u, request);
-    // // u.setPassword(request.getPassword());
-    // // u.setFirstname(request.getFirstname());
-    // // u.setLastname(request.getLastname());
-    // // u.setDob(request.getDob());
-    // return userMapper.toUserResponse(userRepo.save(u));
-    // }
-    public ApiResponse<UserResponse> updateUser(String id, UserUpdateRequest request) {
-        User user = userRepo.findById(id)
-                .orElseThrow(() -> new AppException(ErrorCode.USER_NOTEXISTED));
+    return ApiResponse.<List<UserResponse>>builder().result(users).build();
+  }
 
-        userMapper.updateUser(user, request);
+  // GET ONE
+  // @PostAuthorize("hasRole('ADMIN')")
+  // @PostAuthorize("returnObject.username == authentication.username")
+  // do method ở đây trả về ApiResponse<UserResponse> nên k phải object: chuyển
+  // đổi:
+  @PostAuthorize("returnObject.result.username == authentication.name")
+  public ApiResponse<UserResponse> getUser(String id) {
+    log.info("IN METHOD GET USER BY ID");
+    User user =
+        userRepo.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOTEXISTED));
 
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+    return ApiResponse.<UserResponse>builder().result(userMapper.toUserResponse(user)).build();
+  }
 
-        var roles = roleRepository.findAllById(request.getRoles());
-        user.setRoles(new HashSet<>(roles));
+  public ApiResponse<UserResponse> getMyInfo() {
+    var context = SecurityContextHolder.getContext();
+    String username = context.getAuthentication().getName();
+    // spotless:off
+    User findUser = userRepo
+        .findByUsername(username)
+        .orElseThrow(() -> new AppException(ErrorCode.USER_NOTEXISTED));
+    // spotless:on
+    return ApiResponse.<UserResponse>builder().result(userMapper.toUserResponse(findUser)).build();
+  }
 
-        return ApiResponse.<UserResponse>builder()
-                .result(userMapper.toUserResponse(userRepo.save(user)))
-                .build();
-    }
+  // public UserResponse updateUser(String id, UserUpdateRequest request) {
+  // User u = userRepo.findById(id).orElseThrow(() -> new RuntimeException("User k
+  // ton tai"));
+  // userMapper.updatUser(u, request);
+  // // u.setPassword(request.getPassword());
+  // // u.setFirstname(request.getFirstname());
+  // // u.setLastname(request.getLastname());
+  // // u.setDob(request.getDob());
+  // return userMapper.toUserResponse(userRepo.save(u));
+  // }
+  public ApiResponse<UserResponse> updateUser(String id, UserUpdateRequest request) {
+    User user =
+        userRepo.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOTEXISTED));
 
-    public void deleteUser(String id) {
-        userRepo.deleteById(id);
-    }
+    userMapper.updateUser(user, request);
+
+    user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+    var roles = roleRepository.findAllById(request.getRoles());
+    user.setRoles(new HashSet<>(roles));
+
+    return ApiResponse.<UserResponse>builder()
+        .result(userMapper.toUserResponse(userRepo.save(user)))
+        .build();
+  }
+
+  public void deleteUser(String id) {
+    userRepo.deleteById(id);
+  }
 }

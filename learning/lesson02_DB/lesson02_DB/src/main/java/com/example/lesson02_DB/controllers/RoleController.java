@@ -25,28 +25,23 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
-
 public class RoleController {
-    
-    RoleService roleService;
 
-    @PostMapping
-    ApiResponse<RoleResponse> create(@RequestBody RoleRequest request){
-        return ApiResponse.<RoleResponse>builder()
-        .result(roleService.create(request))
-        .build();
-    }
+  RoleService roleService;
 
-    @GetMapping
-    ApiResponse<List<RoleResponse>> getAll(){
-        return ApiResponse.<List<RoleResponse>>builder()
-        .result(roleService.getAll())
-        .build();
-    }
+  @PostMapping
+  ApiResponse<RoleResponse> create(@RequestBody RoleRequest request) {
+    return ApiResponse.<RoleResponse>builder().result(roleService.create(request)).build();
+  }
 
-    @DeleteMapping("/{role}")
-    ApiResponse<Void> delete(@PathVariable String role){
-        roleService.delete(role);
-        return ApiResponse.<Void>builder().build();
-    }
+  @GetMapping
+  ApiResponse<List<RoleResponse>> getAll() {
+    return ApiResponse.<List<RoleResponse>>builder().result(roleService.getAll()).build();
+  }
+
+  @DeleteMapping("/{role}")
+  ApiResponse<Void> delete(@PathVariable String role) {
+    roleService.delete(role);
+    return ApiResponse.<Void>builder().build();
+  }
 }

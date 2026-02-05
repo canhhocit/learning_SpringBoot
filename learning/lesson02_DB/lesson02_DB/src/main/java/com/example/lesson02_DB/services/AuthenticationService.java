@@ -7,11 +7,11 @@ import java.util.Date;
 import java.util.StringJoiner;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import org.springframework.beans.factory.annotation.Value;
 
 import com.example.lesson02_DB.dto.request.AuthenticationRequest;
 import com.example.lesson02_DB.dto.request.IntrospectRequest;
@@ -47,172 +47,173 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthenticationService {
-    UserRepository userRepository;
+  UserRepository userRepository;
 
-    InvalidateTokenRepository invalidateTokenRepository;
+  InvalidateTokenRepository invalidateTokenRepository;
 
-    @NonFinal
-    @Value("${jwt.signerKey}")
-    protected String SIGNER_KEY;
+  @NonFinal
+  @Value("${jwt.signerKey}")
+  protected String SIGNER_KEY;
 
-    @NonFinal
-    @Value("${jwt.valid-duration}")
-    protected long VALID_DURAION;
+  @NonFinal
+  @Value("${jwt.valid-duration}")
+  protected long VALID_DURAION;
 
-    @NonFinal
-    @Value("${jwt.refreshable-duration}")
-    protected long REFRESHABLE_DURAION;
+  @NonFinal
+  @Value("${jwt.refreshable-duration}")
+  protected long REFRESHABLE_DURAION;
 
-
-    public IntrospectResponse introspect(IntrospectRequest request) {
-        String token = request.getToken();
-        boolean isValid = true;
-        try {
-            verifyToken(token, false); // Method này đã tự bắt exception rồi
-        } catch (AppException e) {
-            isValid = false;
-        }
-
-        return IntrospectResponse.builder()
-                .valid(isValid)
-                .build();
+  public IntrospectResponse introspect(IntrospectRequest request) {
+    String token = request.getToken();
+    boolean isValid = true;
+    try {
+      verifyToken(token, false); // Method này đã tự bắt exception rồi
+    } catch (AppException e) {
+      isValid = false;
     }
 
-    public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        var user = userRepository.findByUsername(request.getUsername())
-                .orElseThrow(() -> new AppException(ErrorCode.USER_NOTEXISTED));
+    return IntrospectResponse.builder().valid(isValid).build();
+  }
 
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
-        boolean authenticated = passwordEncoder.matches(request.getPassword(), user.getPassword());
-        if (!authenticated) {
-            throw new AppException(ErrorCode.UNAUTHETICATED);
-        }
-        var token = generateToken(user);
+  public AuthenticationResponse authenticate(AuthenticationRequest request) {
+    var user =
+        userRepository
+            .findByUsername(request.getUsername())
+            .orElseThrow(() -> new AppException(ErrorCode.USER_NOTEXISTED));
 
-        return AuthenticationResponse.builder()
-                .token(token)
-                .authenticated(true)
-                .build();
+    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+    boolean authenticated = passwordEncoder.matches(request.getPassword(), user.getPassword());
+    if (!authenticated) {
+      throw new AppException(ErrorCode.UNAUTHETICATED);
     }
+    var token = generateToken(user);
 
-    // LOGOUT TOKEN
-    public void logout(LogoutRequest request) {
-        try {
-            var signToken = verifyToken(request.getToken(),true);
-            String jit = signToken.getJWTClaimsSet().getJWTID();
-            Date expiryTime = signToken.getJWTClaimsSet().getExpirationTime();
+    return AuthenticationResponse.builder().token(token).authenticated(true).build();
+  }
 
-            InvalidateToken invalidateToken = InvalidateToken.builder()
-                    .id(jit)
-                    .expiryTime(expiryTime)
-                    .build();
-            invalidateTokenRepository.save(invalidateToken);
-        } catch (ParseException e) {
-            throw new AppException(ErrorCode.UNAUTHETICATED);
-        }
-        catch (AppException e) {
-            log.info("TOKEN ALREADY EXPRIED !!");
-        }
+  // LOGOUT TOKEN
+  public void logout(LogoutRequest request) {
+    try {
+      var signToken = verifyToken(request.getToken(), true);
+      String jit = signToken.getJWTClaimsSet().getJWTID();
+      Date expiryTime = signToken.getJWTClaimsSet().getExpirationTime();
+
+      InvalidateToken invalidateToken =
+          InvalidateToken.builder().id(jit).expiryTime(expiryTime).build();
+      invalidateTokenRepository.save(invalidateToken);
+    } catch (ParseException e) {
+      throw new AppException(ErrorCode.UNAUTHETICATED);
+    } catch (AppException e) {
+      log.info("TOKEN ALREADY EXPRIED !!");
     }
+  }
 
-    // REFRESH TOKEN
-    public AuthenticationResponse refreshToken(RefreshTokenRequest request) {
-        try {
-            // ktra hieu luc Token
-            var signJWT = verifyToken(request.getToken(), true);
-            var jit = signJWT.getJWTClaimsSet().getJWTID();
-            var expiryTime = signJWT.getJWTClaimsSet().getExpirationTime();
+  // REFRESH TOKEN
+  public AuthenticationResponse refreshToken(RefreshTokenRequest request) {
+    try {
+      // ktra hieu luc Token
+      var signJWT = verifyToken(request.getToken(), true);
+      var jit = signJWT.getJWTClaimsSet().getJWTID();
+      var expiryTime = signJWT.getJWTClaimsSet().getExpirationTime();
 
-            InvalidateToken invalidateToken = InvalidateToken.builder()
-                    .id(jit)
-                    .expiryTime(expiryTime)
-                    .build();
-            invalidateTokenRepository.save(invalidateToken);
+      InvalidateToken invalidateToken =
+          InvalidateToken.builder().id(jit).expiryTime(expiryTime).build();
+      invalidateTokenRepository.save(invalidateToken);
 
-            var username = signJWT.getJWTClaimsSet().getSubject();
+      var username = signJWT.getJWTClaimsSet().getSubject();
 
-            var user = userRepository.findByUsername(username).orElseThrow(
-                    () -> new AppException(ErrorCode.UNAUTHETICATED));
+      var user =
+          userRepository
+              .findByUsername(username)
+              .orElseThrow(() -> new AppException(ErrorCode.UNAUTHETICATED));
 
-            var token = generateToken(user);
+      var token = generateToken(user);
 
-            return AuthenticationResponse.builder()
-                    .token(token)
-                    .authenticated(true)
-                    .build();
-        } catch (ParseException e) {
-            throw new AppException(ErrorCode.UNAUTHETICATED);
-        }
+      return AuthenticationResponse.builder().token(token).authenticated(true).build();
+    } catch (ParseException e) {
+      throw new AppException(ErrorCode.UNAUTHETICATED);
     }
+  }
 
-    private SignedJWT verifyToken(String token, boolean isRefresh) {
-        try {
+  private SignedJWT verifyToken(String token, boolean isRefresh) {
+    try {
 
-            SignedJWT signedJWT = SignedJWT.parse(token);
+      SignedJWT signedJWT = SignedJWT.parse(token);
 
-            JWSVerifier verifier = new MACVerifier(SIGNER_KEY.getBytes());
-            boolean verified = signedJWT.verify(verifier);
+      JWSVerifier verifier = new MACVerifier(SIGNER_KEY.getBytes());
+      boolean verified = signedJWT.verify(verifier);
 
-            Date expirationTime = isRefresh 
-            ? new Date (signedJWT.getJWTClaimsSet().getIssueTime().toInstant().plus(REFRESHABLE_DURAION, ChronoUnit.SECONDS).toEpochMilli())
-            :signedJWT.getJWTClaimsSet().getExpirationTime();
-            boolean expired = expirationTime.before(new Date());
+      Date expirationTime =
+          isRefresh
+              ? new Date(
+                  signedJWT
+                      .getJWTClaimsSet()
+                      .getIssueTime()
+                      .toInstant()
+                      .plus(REFRESHABLE_DURAION, ChronoUnit.SECONDS)
+                      .toEpochMilli())
+              : signedJWT.getJWTClaimsSet().getExpirationTime();
+      boolean expired = expirationTime.before(new Date());
 
-            if (!(verified && !expired)) {
-                throw new AppException(ErrorCode.UNAUTHETICATED);
-            }
+      if (!(verified && !expired)) {
+        throw new AppException(ErrorCode.UNAUTHETICATED);
+      }
 
-            // nếu còn hiệu lực -> check in db
-            if (invalidateTokenRepository.existsById(signedJWT.getJWTClaimsSet().getJWTID())) {
-                throw new AppException(ErrorCode.UNAUTHETICATED);
-            }
+      // nếu còn hiệu lực -> check in db
+      if (invalidateTokenRepository.existsById(signedJWT.getJWTClaimsSet().getJWTID())) {
+        throw new AppException(ErrorCode.UNAUTHETICATED);
+      }
 
-            return signedJWT;
+      return signedJWT;
 
-        } catch (ParseException | JOSEException e) {
-            throw new AppException(ErrorCode.UNAUTHETICATED);
-        }
+    } catch (ParseException | JOSEException e) {
+      throw new AppException(ErrorCode.UNAUTHETICATED);
     }
+  }
 
-    // method tao token, token có kdl String -> String
-    private String generateToken(User user) {
-        JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
+  // method tao token, token có kdl String -> String
+  private String generateToken(User user) {
+    JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
 
-        // Các data trong body gọi là claim
-        JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
-                .subject(user.getUsername())
-                .issuer("canhhocit.be")
-                .issueTime(new Date())
-                .expirationTime(new Date(Instant.now().plus(VALID_DURAION, ChronoUnit.SECONDS).toEpochMilli()))
-                .jwtID(UUID.randomUUID().toString())// gan cho token 1 id
-                .claim("scope", buildScope(user))
-                .build();
+    // Các data trong body gọi là claim
+    JWTClaimsSet jwtClaimsSet =
+        new JWTClaimsSet.Builder()
+            .subject(user.getUsername())
+            .issuer("canhhocit.be")
+            .issueTime(new Date())
+            .expirationTime(
+                new Date(Instant.now().plus(VALID_DURAION, ChronoUnit.SECONDS).toEpochMilli()))
+            .jwtID(UUID.randomUUID().toString()) // gan cho token 1 id
+            .claim("scope", buildScope(user))
+            .build();
 
-        Payload payload = new Payload(jwtClaimsSet.toJSONObject());
-        JWSObject jwsObject = new JWSObject(header, payload);
-        // ký token, sd thuat toan
-        try {
-            jwsObject.sign(new MACSigner(SIGNER_KEY.getBytes()));
-            return jwsObject.serialize();
-        } catch (JOSEException e) {
-            log.error("cannot create token", e);
-            throw new RuntimeException(e);
-        }
-
+    Payload payload = new Payload(jwtClaimsSet.toJSONObject());
+    JWSObject jwsObject = new JWSObject(header, payload);
+    // ký token, sd thuat toan
+    try {
+      jwsObject.sign(new MACSigner(SIGNER_KEY.getBytes()));
+      return jwsObject.serialize();
+    } catch (JOSEException e) {
+      log.error("cannot create token", e);
+      throw new RuntimeException(e);
     }
+  }
 
-    // roles
-    private String buildScope(User user) {
-        StringJoiner stringJoiner = new StringJoiner(" ");
-        if (!CollectionUtils.isEmpty(user.getRoles())) {
-            // user.getRoles().forEach(s -> stringJoiner.add(s));
-            user.getRoles().forEach(role -> {
+  // roles
+  private String buildScope(User user) {
+    StringJoiner stringJoiner = new StringJoiner(" ");
+    if (!CollectionUtils.isEmpty(user.getRoles())) {
+      // user.getRoles().forEach(s -> stringJoiner.add(s));
+      user.getRoles()
+          .forEach(
+              role -> {
                 stringJoiner.add("ROLE_" + role.getName());
                 if (!CollectionUtils.isEmpty(role.getPermission())) {
-                    role.getPermission().forEach(permission -> stringJoiner.add(permission.getName()));
+                  role.getPermission()
+                      .forEach(permission -> stringJoiner.add(permission.getName()));
                 }
-            });
-        }
-        return stringJoiner.toString();
+              });
     }
+    return stringJoiner.toString();
+  }
 }

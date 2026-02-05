@@ -20,30 +20,34 @@ import lombok.extern.slf4j.Slf4j;
 @Configuration
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@Slf4j 
+@Slf4j
 public class ApplicationInitConfig {
 
-    PasswordEncoder passwordEncoder;
+  PasswordEncoder passwordEncoder;
 
-    @Bean
-    @ConditionalOnProperty(prefix = "spring", value = "datasource.driver-class-name", havingValue = "com.mysql.cj.jdbc.Driver")
-    ApplicationRunner applicationRunner(UserRepository userRepo) {
-        log.info("CONFIG: Init Application");
-        // dc khởi chạy mỗi khi đc start
-        return args -> {
-            if (userRepo.findByUsername("admin").isEmpty()) {
-                var roles = new HashSet<String>();// HashSet là implementation của Set
-                roles.add(Role.ADMIN.name());
-                User user = User.builder()
-                        .username("admin")
-                        .password(passwordEncoder.encode("admin"))
-                        // .roles(roles)
-                        .build();
-                userRepo.save(user);
-                log.info("admin user has been created with default password: admin, please change it !");
-            } else {
-                log.info("Admin user already exists");
-            }
-        };
-    }
+  @Bean
+  @ConditionalOnProperty(
+      prefix = "spring",
+      value = "datasource.driver-class-name",
+      havingValue = "com.mysql.cj.jdbc.Driver")
+  ApplicationRunner applicationRunner(UserRepository userRepo) {
+    log.info("CONFIG: Init Application");
+    // dc khởi chạy mỗi khi đc start
+    return args -> {
+      if (userRepo.findByUsername("admin").isEmpty()) {
+        var roles = new HashSet<String>(); // HashSet là implementation của Set
+        roles.add(Role.ADMIN.name());
+        User user =
+            User.builder()
+                .username("admin")
+                .password(passwordEncoder.encode("admin"))
+                // .roles(roles)
+                .build();
+        userRepo.save(user);
+        log.info("admin user has been created with default password: admin, please change it !");
+      } else {
+        log.info("Admin user already exists");
+      }
+    };
+  }
 }

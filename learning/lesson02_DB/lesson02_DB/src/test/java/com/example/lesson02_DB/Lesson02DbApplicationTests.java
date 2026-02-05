@@ -7,8 +7,8 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource("/test.properties")
 class Lesson02DbApplicationTests {
 
-	// @Test
-	// void contextLoads() {
-	// }
+  // @Test
+  // void contextLoads() {
+  // }
 
 }

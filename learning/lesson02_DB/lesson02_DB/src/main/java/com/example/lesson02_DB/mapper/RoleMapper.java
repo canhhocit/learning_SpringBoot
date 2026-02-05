@@ -16,19 +16,21 @@ import com.example.lesson02_DB.entity.Role;
 @Mapper(componentModel = "spring")
 public interface RoleMapper {
 
-    @Mapping(target = "permission", ignore = true)
-    Role toRole(RoleRequest request);
+  @Mapping(target = "permission", ignore = true)
+  Role toRole(RoleRequest request);
 
-    @Mapping(target = "permissions", source = "permission", qualifiedByName = "toPermissionResponses")
-    RoleResponse toRoleResponse(Role role);
+  @Mapping(target = "permissions", source = "permission", qualifiedByName = "toPermissionResponses")
+  RoleResponse toRoleResponse(Role role);
 
-    @Named("toPermissionResponses")
-    default Set<PermissionResponse> toPermissionResponses(Set<Permission> permissions) {
-        return permissions.stream()
-                .map(permission -> PermissionResponse.builder()
-                        .name(permission.getName())
-                        .description(permission.getDescription())
-                        .build())
-                .collect(Collectors.toSet());
-    }
+  @Named("toPermissionResponses")
+  default Set<PermissionResponse> toPermissionResponses(Set<Permission> permissions) {
+    return permissions.stream()
+        .map(
+            permission ->
+                PermissionResponse.builder()
+                    .name(permission.getName())
+                    .description(permission.getDescription())
+                    .build())
+        .collect(Collectors.toSet());
+  }
 }
