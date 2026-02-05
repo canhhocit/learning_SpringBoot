@@ -61,6 +61,7 @@ Xây dựng theo kiến trúc:
 - deployment
 - Tối ưu hệ thống
 - ...
+- Tìm hiểu n8n
 
 ### JWT
 
