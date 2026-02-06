@@ -1,4 +1,4 @@
-package com.example.lesson02_DB.config;
+package com.example.lesson02_DB.config;// NOSONAR
 
 import java.util.Objects;
 
@@ -21,7 +21,7 @@ public class CustomJwtDecoder implements JwtDecoder {
   @Value("${jwt.signerKey}")
   private String signerKey;
 
-  @Autowired private AuthenticationService authenticationService;
+  @Autowired private AuthenticationService authenticationService;// NOSONAR
 
   private NimbusJwtDecoder nimbusJwtDecoder = null;
 

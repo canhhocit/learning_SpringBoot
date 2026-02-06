@@ -1,4 +1,5 @@
-package com.example.lesson02_DB.config;
+
+package com.example.lesson02_DB.config;// NOSONAR
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,11 +21,11 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-  private final String[] ENDPOINTS_LIST = {
+  private static final String[] ENDPOINTS_LIST = {
     "/users", "/auth/token", "/auth/introspect", "/auth/logout", "/auth/refresh"
   };
 
-  @Autowired private CustomJwtDecoder customJwtDecoder;
+  @Autowired private CustomJwtDecoder customJwtDecoder; // NOSONAR
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {

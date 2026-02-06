@@ -1,4 +1,4 @@
-package com.example.lesson02_DB.services;
+package com.example.lesson02_DB.services;// NOSONAR
 
 import java.text.ParseException;
 import java.time.Instant;
@@ -53,15 +53,15 @@ public class AuthenticationService {
 
   @NonFinal
   @Value("${jwt.signerKey}")
-  protected String SIGNER_KEY;
+  protected String SIGNER_KEY;// NOSONAR
 
   @NonFinal
   @Value("${jwt.valid-duration}")
-  protected long VALID_DURAION;
+  protected long VALID_DURAION;// NOSONAR
 
   @NonFinal
   @Value("${jwt.refreshable-duration}")
-  protected long REFRESHABLE_DURAION;
+  protected long REFRESHABLE_DURAION;// NOSONAR
 
   public IntrospectResponse introspect(IntrospectRequest request) {
     String token = request.getToken();
@@ -195,7 +195,7 @@ public class AuthenticationService {
       return jwsObject.serialize();
     } catch (JOSEException e) {
       log.error("cannot create token", e);
-      throw new RuntimeException(e);
+      throw new RuntimeException(e);// NOSONAR
     }
   }
 

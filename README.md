@@ -38,6 +38,8 @@ Xây dựng theo kiến trúc:
 - UnitTest : sử dụng anotation `@SpringBootTest` &`@Test` // `Nguyên tắc`: Viết layer trên thì Moc layer dưới
 
 - Đo code với JaCoCo 
+- sử dụng SonarLint và SonarQube để quét & bug và lỗi cảnh báo
+
 
 - FE: lấy api cơ bản
 ## Hướng tới & chưa học:
@@ -140,3 +142,4 @@ Unit Test
 - `@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)` : tự động đưa các field không khai báo trở thành kiểu private final.
 
 - `@JsonInclude(JsonInclude.Include.NON_NULL)`: Khai báo cho Json biết là nếu field nào null thì k ghi vào json
+

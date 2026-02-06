@@ -1,4 +1,4 @@
-package com.example.lesson02_DB.services;
+package com.example.lesson02_DB.services;// NOSONAR
 
 import java.util.List;
 

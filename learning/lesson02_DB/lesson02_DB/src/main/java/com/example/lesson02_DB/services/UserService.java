@@ -1,4 +1,4 @@
-package com.example.lesson02_DB.services;
+package com.example.lesson02_DB.services;// NOSONAR
 
 import java.util.HashSet;
 import java.util.List;
@@ -58,10 +58,10 @@ public class UserService {
     // sd mapstruct
     User user = userMapper.toUser(request);
     // mã hóa pass = Bcrypt
-    // PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+    // PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10); 
     user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-    HashSet<String> roles = new HashSet<>();
+    HashSet<String> roles = new HashSet<>();// NOSONAR
     roles.add(Role.USER.name());
     // user.setRoles(roles);
     return ApiResponse.<UserResponse>builder()

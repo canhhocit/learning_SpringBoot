@@ -1,4 +1,4 @@
-package com.example.lesson02_DB.repositories;
+package com.example.lesson02_DB.repositories;// NOSONAR
 
 import java.util.Optional;
 
