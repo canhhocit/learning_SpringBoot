@@ -74,8 +74,9 @@ public class AuthenticationService {
 
     return IntrospectResponse.builder().valid(isValid).build();
   }
-
+  // AUTHENTICATE
   public AuthenticationResponse authenticate(AuthenticationRequest request) {
+    log.info("SignerKey: {}",SIGNER_KEY);
     var user =
         userRepository
             .findByUsername(request.getUsername())

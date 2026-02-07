@@ -1,0 +1,56 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    
+
+    {
+      "type": "java",
+      "name": "Current File",
+      "request": "launch",
+      "mainClass": "${file}"
+    },
+    {
+      "type": "java",
+      "name": "Learn00Application",
+      "request": "launch",
+      "mainClass": "com.canhhocit.learn00.Learn00Application",
+      "projectName": "learn00"
+    },
+    {
+      "type": "java",
+      "name": "Learn01Application",
+      "request": "launch",
+      "mainClass": "com.canhhocit.learn01.Learn01Application",
+      "projectName": "learn01"
+    },
+    {
+      "type": "java",
+      "name": "LearnTwohoursApplication",
+      "request": "launch",
+      "mainClass": "com.canhhocit.learn_twohours.LearnTwohoursApplication",
+      "projectName": "learn_twohours"
+    },
+    {
+      "type": "java",
+      "name": "Lesson02DbApplication (default)",
+      "request": "launch",
+      "mainClass": "com.example.lesson02_DB.Lesson02DbApplication",
+      "projectName": "lesson02_DB"
+    },
+    {
+      "type": "java",
+      "name": "Lesson02DbApplication (prod)",
+      "request": "launch",
+      "mainClass": "com.example.lesson02_DB.Lesson02DbApplication",
+      "projectName": "lesson02_DB",
+      "vmArgs": "-Dspring.profiles.active=prod"
+    },
+    {
+      "type": "java",
+      "name": "Pr01Application",
+      "request": "launch",
+      "mainClass": "com.practice.pr01.Pr01Application",
+      "projectName": "pr01"
+    }
+  ]
+}
