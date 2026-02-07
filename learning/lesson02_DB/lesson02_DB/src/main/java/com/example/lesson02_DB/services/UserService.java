@@ -3,6 +3,7 @@ package com.example.lesson02_DB.services;// NOSONAR
 import java.util.HashSet;
 import java.util.List;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -40,22 +41,10 @@ public class UserService {
   public ApiResponse<UserResponse> createUser(UserCreationRequest request) {
 
     log.info("SERVICE: create User");
-    if (userRepo.existsByUsername(request.getUsername())) {
-      throw new AppException(ErrorCode.USER_EXISTED);
-    }
-    // tac dung cua lombok @builder
-    // userCreationRequest request2 = userCreationRequest.builder()
-    // .username("")
-    // .firstname(" ")
-    // .build();
-    // trc khi sd mapstruct
-    // user user = new user();
-    // user.setUsername(request.getUsername());
-    // user.setPassword(request.getPassword());
-    // user.setFirstname(request.getFirstname());
-    // user.setLastname(request.getLastname());
-    // user.setDob(request.getDob());
-    // sd mapstruct
+    // if (userRepo.existsByUsername(request.getUsername())) {
+    //   throw new AppException(ErrorCode.USER_EXISTED);
+    // }
+
     User user = userMapper.toUser(request);
     // mã hóa pass = Bcrypt
     // PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10); 
@@ -64,8 +53,14 @@ public class UserService {
     HashSet<String> roles = new HashSet<>();// NOSONAR
     roles.add(Role.USER.name());
     // user.setRoles(roles);
+    try {
+      user =userRepo.save(user);
+    } catch (DataIntegrityViolationException e) {
+      log.info("CREATE_USER: user existed!");
+      throw new AppException(ErrorCode.USER_EXISTED);
+    }
     return ApiResponse.<UserResponse>builder()
-        .result(userMapper.toUserResponse(userRepo.save(user)))
+        .result(userMapper.toUserResponse(user))
         .build();
   }
 
@@ -108,16 +103,6 @@ public class UserService {
     return ApiResponse.<UserResponse>builder().result(userMapper.toUserResponse(findUser)).build();
   }
 
-  // public UserResponse updateUser(String id, UserUpdateRequest request) {
-  // User u = userRepo.findById(id).orElseThrow(() -> new RuntimeException("User k
-  // ton tai"));
-  // userMapper.updatUser(u, request);
-  // // u.setPassword(request.getPassword());
-  // // u.setFirstname(request.getFirstname());
-  // // u.setLastname(request.getLastname());
-  // // u.setDob(request.getDob());
-  // return userMapper.toUserResponse(userRepo.save(u));
-  // }
   public ApiResponse<UserResponse> updateUser(String id, UserUpdateRequest request) {
     User user =
         userRepo.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOTEXISTED));

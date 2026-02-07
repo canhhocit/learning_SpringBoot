@@ -37,9 +37,9 @@ Xây dựng theo kiến trúc:
 - Authorization: phân quyền với PreAutho và PostAutho
 - UnitTest : sử dụng anotation `@SpringBootTest` &`@Test` // `Nguyên tắc`: Viết layer trên thì Moc layer dưới
 
-- Đo code với JaCoCo 
-- sử dụng SonarLint và SonarQube để quét & bug và lỗi cảnh báo
-
+- Đo code với JaCoCo, sử dụng spotless để check
+- sử dụng SonarLint và SonarQube để quét & bug và lỗi cảnh báo : admin - canh123
+- sử dụng JMeter để gửi nhiều request cùng 1 lúc
 
 - FE: lấy api cơ bản
 ## Hướng tới & chưa học:
