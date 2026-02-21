@@ -38,13 +38,15 @@ Xây dựng theo kiến trúc:
 - UnitTest : sử dụng anotation `@SpringBootTest` &`@Test` // `Nguyên tắc`: Viết layer trên thì Moc layer dưới
 
 - Đo code với JaCoCo, sử dụng spotless để check
-- sử dụng SonarLint và SonarQube để quét & bug và lỗi cảnh báo : admin - canh123
+- sử dụng SonarLint và SonarQube để quét & bug và lỗi cảnh báo : admin - admin
 - sử dụng JMeter để gửi nhiều request cùng 1 lúc
-
 - FE: lấy api cơ bản
+      ### Đóng gói ứng dụng:
+      - C1: `./mvnw package -DskipTests`: bỏ qua unit test
+      - C2: khi đã cài maven: `mvn package -DskipTests`
 ## Hướng tới & chưa học:
 
-- Build Docker image
+- Build
 - aws
 - swagger
   #### Học FE ở múc đủ dùng:
