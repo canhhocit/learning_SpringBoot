@@ -44,10 +44,10 @@ Xây dựng theo kiến trúc:
       ### Đóng gói ứng dụng:
       - C1: `./mvnw package -DskipTests`: bỏ qua unit test
       - C2: khi đã cài maven: `mvn package -DskipTests`
+- Build docker image: link demo: `https://github.com/canhhocit/indentity-service`
 ## Hướng tới & chưa học:
 
-- Build
-- aws
+
 - swagger
   #### Học FE ở múc đủ dùng:
   - React cơ bản
@@ -58,14 +58,6 @@ Xây dựng theo kiến trúc:
   `MỤC ĐÍCH`: hiểu FE
 
 ------------------------------------- END ----------------------------------------
-
-## `NOTE`: Các kiến thức cần học thêm:
-
-- AWS, Docker,k8s
-- deployment
-- Tối ưu hệ thống
-- ...
-- Tìm hiểu n8n
 
 ### JWT
 
