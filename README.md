@@ -45,16 +45,14 @@ Xây dựng theo kiến trúc:
       - C1: `./mvnw package -DskipTests`: bỏ qua unit test
       - C2: khi đã cài maven: `mvn package -DskipTests`
 - Build docker image: link demo: `https://github.com/canhhocit/indentity-service`
+- swagger
 ## Hướng tới & chưa học:
 
-
-- swagger
   #### Học FE ở múc đủ dùng:
   - React cơ bản
-
   - Call API
-
   - Login + token
+  - 
   `MỤC ĐÍCH`: hiểu FE
 
 ------------------------------------- END ----------------------------------------
